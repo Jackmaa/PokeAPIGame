@@ -80,3 +80,27 @@ npm run dev
 ✔️ Sound effects & attack animations
 
 ⚡ _Catch 'em all!_
+
+## 📖 Resources & References
+
+Here are some useful links for development:
+
+### **API & Data Fetching:**
+
+- [PokéAPI Docs](https://pokeapi.co/docs/v2) – Official API documentation
+- [Handling API Calls with Axios](https://axios-http.com/)
+- [React Query for Efficient Data Fetching](https://react-query.tanstack.com/) (Optional)
+
+### **UI & Animations:**
+
+- [Framer Motion Guide](https://www.framer.com/motion/)
+- [CSS Tricks – Dark Mode Guide](https://css-tricks.com/a-complete-guide-to-dark-mode-on-the-web/)
+
+### **Game Logic & Mechanics:**
+
+- [Game Balancing & Type Effectiveness](https://pokemondb.net/type) (Pokémon Mechanics)
+
+### **React & Project Setup:**
+
+- [Vite Guide for Fast React Development](https://vitejs.dev/guide/)
+- [React Router v6 Docs](https://reactrouter.com/en/main)
