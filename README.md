@@ -21,13 +21,12 @@ A complete Pokémon experience featuring a **Pokédex** and a **Minigame**.
 
 ## 🛠️ Tech Stack
 
-| Technology        | Usage               |
-| ----------------- | ------------------- |
-| **React (Vite)**  | Frontend framework  |
-| **Framer Motion** | Animations          |
-| **Express.js**    | Backend (if needed) |
-| **Axios**         | API requests        |
-| **PokéAPI**       | Fetch Pokémon data  |
+| Technology        | Usage              |
+| ----------------- | ------------------ |
+| **React (Vite)**  | Frontend framework |
+| **Framer Motion** | Animations         |
+| **Axios**         | API requests       |
+| **PokéAPI**       | Fetch Pokémon data |
 
 ---
 
