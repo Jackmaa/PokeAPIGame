@@ -39,3 +39,25 @@ cd client
 npm install
 npm run dev
 ```
+
+## 🔍 Features
+
+### 📊 Pokédex:
+
+✔️ Search for Pokémon by name or ID  
+✔️ View detailed stats, abilities, and evolutions  
+✔️ Filter by type  
+✔️ Compare Pokémon side by side  
+✔️ Mark favorites (stored in localStorage)
+
+### ⚔️ Battle Game:
+
+✔️ Random enemy Pokémon generation  
+✔️ Turn-based combat system  
+✔️ HP bars & stat-based damage calculation  
+✔️ Type effectiveness implementation  
+✔️ Score tracking  
+✔️ Game loop with increasing difficulty  
+✔️ Sound effects & attack animations
+
+⚡ _Catch 'em all!_
