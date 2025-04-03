@@ -30,6 +30,25 @@ A complete Pokémon experience featuring a **Pokédex** and a **Minigame**.
 
 ---
 
+## 📂 Project Structure
+
+```
+/pokemon-project
+├── client/ (Frontend)
+│   ├── src/
+│   │   ├── components/ (Reusable UI)
+│   │   ├── pages/ (Different views)
+│   │   ├── assets/ (Images, icons)
+│   ├── public/ (Static assets)
+│   ├── package.json
+│   ├── index.html
+│   ├── vite.config.js
+├── README.md
+├── .gitignore
+```
+
+---
+
 ## 📦 Installation & Setup
 
 ### 🎨 **Frontend (Pokédex + Minigame UI)**
