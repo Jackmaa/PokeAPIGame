@@ -2,9 +2,9 @@ import { motion } from "framer-motion";
 
 function PokemonCard({ data }) {
   if (!data) return null;
+
   return (
     <motion.div
-      key={data.id} // Unique identifier for the pokemon used here to ensure smooth transitions when the pokemon changes
       className="pokemon-card"
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}

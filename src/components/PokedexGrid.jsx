@@ -6,21 +6,27 @@ import axios from "axios";
 function PokedexGrid() {
   const [pokemonList, setPokemonList] = useState([]);
   const [selectedType, setSelectedType] = useState(null);
+  const [limit, setLimit] = useState(20);
   const [loading, setLoading] = useState(true);
+
+  // Reset limit on type change
+  useEffect(() => {
+    setLimit(20);
+  }, [selectedType]);
 
   useEffect(() => {
     const fetchPokemon = async () => {
       setLoading(true);
-
       try {
+        let fetchedData = [];
+
         if (selectedType) {
-          // 🔥 Fetch Pokémon by TYPE
           const res = await axios.get(
             `https://pokeapi.co/api/v2/type/${selectedType}`
           );
           const pokemonsOfType = res.data.pokemon
-            .slice(0, 20) // limit to 20 for performance
-            .map((p) => p.pokemon);
+            .map((p) => p.pokemon)
+            .slice(0, limit);
 
           const detailedData = await Promise.all(
             pokemonsOfType.map((p) =>
@@ -31,11 +37,10 @@ function PokedexGrid() {
             )
           );
 
-          setPokemonList(detailedData.filter(Boolean));
+          fetchedData = detailedData.filter(Boolean);
         } else {
-          // 🌐 Fetch default 20 Pokémon (like before)
           const res = await axios.get(
-            "https://pokeapi.co/api/v2/pokemon?limit=20"
+            `https://pokeapi.co/api/v2/pokemon?limit=${limit}`
           );
           const results = res.data.results;
 
@@ -48,17 +53,33 @@ function PokedexGrid() {
             )
           );
 
-          setPokemonList(detailedData.filter(Boolean));
+          fetchedData = detailedData.filter(Boolean);
         }
 
+        setPokemonList(fetchedData);
         setLoading(false);
+
+        // ✅ Restore scroll position
+        const savedScroll = sessionStorage.getItem("pokedexScroll");
+        if (savedScroll) {
+          requestAnimationFrame(() => {
+            setTimeout(() => {
+              window.scrollTo({
+                top: parseInt(savedScroll),
+                behavior: "instant", // or "auto"
+              });
+              sessionStorage.removeItem("pokedexScroll");
+            }, 100); // Give layout time to render
+          });
+        }
       } catch (err) {
         console.error("Error loading Pokémon:", err);
+        setLoading(false);
       }
     };
 
     fetchPokemon();
-  }, [selectedType]);
+  }, [selectedType, limit]);
 
   if (loading) return <div className="pokeball-spinner"></div>;
 
@@ -69,6 +90,17 @@ function PokedexGrid() {
         {pokemonList.map((pokemon) => (
           <PokemonCard key={pokemon.id} data={pokemon} />
         ))}
+      </div>
+      <div style={{ textAlign: "center", marginTop: "2rem" }}>
+        <button
+          className="load-more-button"
+          onClick={() => {
+            sessionStorage.setItem("pokedexScroll", window.scrollY);
+            setLimit(limit + 20);
+          }}
+        >
+          Load More
+        </button>
       </div>
     </>
   );
