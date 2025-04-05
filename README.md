@@ -49,10 +49,6 @@ A complete Pokémon experience featuring a **Pokédex** and a **Minigame**.
 
 ## 📦 Installation & Setup
 
-### 🎨 **Frontend (Pokédex + Minigame UI)**
-
-## 📦 Installation & Setup
-
 ```sh
 # Clone the repo
 git clone https://github.com/Jackmaa/pokedex.git
