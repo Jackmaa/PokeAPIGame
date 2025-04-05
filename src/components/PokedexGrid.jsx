@@ -9,11 +9,6 @@ function PokedexGrid() {
   const [limit, setLimit] = useState(20);
   const [loading, setLoading] = useState(true);
 
-  // Reset limit on type change
-  useEffect(() => {
-    setLimit(20);
-  }, [selectedType]);
-
   useEffect(() => {
     const fetchPokemon = async () => {
       setLoading(true);
@@ -85,7 +80,13 @@ function PokedexGrid() {
 
   return (
     <>
-      <TypeFilter onSelectType={setSelectedType} selectedType={selectedType} />
+      <TypeFilter
+        onSelectType={(type) => {
+          setLimit(20); // ⬅️ Reset limit first
+          setSelectedType(type); // ⬅️ Then trigger fetch
+        }}
+        selectedType={selectedType}
+      />
       <div className="pokedex-grid">
         {pokemonList.map((pokemon) => (
           <PokemonCard key={pokemon.id} data={pokemon} />
