@@ -9,7 +9,7 @@ function TypeFilter({ onSelectType, selectedType }) {
       try {
         const res = await axios.get("https://pokeapi.co/api/v2/type");
         const filteredTypes = res.data.results.filter(
-          (types) => !["shadow", "unknown"].includes(types.name)
+          (types) => !["shadow", "stellar", "unknown"].includes(types.name)
         ); // ← remove shadow and unknown types (shadow is a glitch type, unknown is a glitch type)
         setTypes(filteredTypes);
       } catch (error) {
