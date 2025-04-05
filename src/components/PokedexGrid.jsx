@@ -60,7 +60,7 @@ function PokedexGrid() {
     fetchPokemon();
   }, [selectedType]);
 
-  if (loading) return <p>Loading Pokémon...</p>;
+  if (loading) return <div className="pokeball-spinner"></div>;
 
   return (
     <>
