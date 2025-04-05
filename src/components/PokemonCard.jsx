@@ -1,6 +1,7 @@
 import { motion } from "framer-motion";
 
 function PokemonCard({ data }) {
+  if (!data) return null;
   return (
     <motion.div
       key={data.id} // Unique identifier for the pokemon used here to ensure smooth transitions when the pokemon changes
@@ -13,7 +14,7 @@ function PokemonCard({ data }) {
       <img src={data.sprites.front_default} alt={data.name} />
       <p>
         <strong>Type: </strong>
-        {data.types.map((type) => type.type.name).join(", ")}
+        {data.types.map((t) => t.type.name).join(", ")}
       </p>
       <p>
         <strong>Height: </strong>
@@ -24,10 +25,10 @@ function PokemonCard({ data }) {
         {data.weight}
       </p>
       <div>
-        <strong>Abilities: </strong>
+        <strong>Abilities:</strong>
         <ul>
-          {data.abilities.map((ability, index) => (
-            <li key={index}>{ability.ability.name}</li>
+          {data.abilities.map((a, i) => (
+            <li key={i}>{a.ability.name}</li>
           ))}
         </ul>
       </div>
