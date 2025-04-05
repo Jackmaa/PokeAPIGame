@@ -50,3 +50,30 @@ body {
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
   text-align: center;
 }
+
+.type-filter {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  justify-content: center;
+  margin-top: 1.5rem;
+}
+
+.type-filter button {
+  border: none;
+  padding: 0.5rem 1rem;
+  background-color: #eee;
+  border: none;
+  border-radius: 0.5rem;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.type-filter button:hover {
+  background-color: #d4d4d4;
+}
+
+.type-filter button.active {
+  background-color: #4caf50;
+  color: #fff;
+}
