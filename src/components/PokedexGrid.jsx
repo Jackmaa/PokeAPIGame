@@ -64,7 +64,7 @@ function PokedexGrid() {
 
   return (
     <>
-      <TypeFilter onSelectType={setSelectedType} />
+      <TypeFilter onSelectType={setSelectedType} selectedType={selectedType} />
       <div className="pokedex-grid">
         {pokemonList.map((pokemon) => (
           <PokemonCard key={pokemon.id} data={pokemon} />

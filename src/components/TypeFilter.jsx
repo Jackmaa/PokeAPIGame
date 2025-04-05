@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import axios from "axios";
 
-function TypeFilter({ onSelectType }) {
+function TypeFilter({ onSelectType, selectedType }) {
   const [types, setTypes] = useState([]);
 
   useEffect(() => {
@@ -20,9 +20,18 @@ function TypeFilter({ onSelectType }) {
   }, []);
   return (
     <div className="type-filter">
-      <button onClick={() => onSelectType(null)}>All</button>
+      <button
+        onClick={() => onSelectType(null)}
+        className={selectedType === null ? "selected" : ""}
+      >
+        All
+      </button>
       {types.map((type) => (
-        <button key={type.name} onClick={() => onSelectType(type.name)}>
+        <button
+          key={type.name}
+          onClick={() => onSelectType(type.name)}
+          className={selectedType === type.name ? "selected" : ""}
+        >
           {type.name.charAt(0).toUpperCase() + type.name.slice(1)}
         </button>
       ))}

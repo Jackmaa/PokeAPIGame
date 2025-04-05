@@ -73,7 +73,9 @@ body {
   background-color: #d4d4d4;
 }
 
-.type-filter button.active {
-  background-color: #4caf50;
-  color: #fff;
+.type-filter button.selected {
+  background-color: #ffcc00;
+  color: #222;
+  box-shadow: 0 0 8px rgba(255, 204, 0, 0.8);
+  transform: scale(1.05);
 }
