@@ -1,13 +1,19 @@
 import { useState } from "react";
 
-function SearchBar({ onSearch }) {
+function SearchBar({ onSearch, onError }) {
   const [input, setInput] = useState("");
 
   const handleSubmit = (e) => {
     e.preventDefault();
     const trimmed = input.trim();
-    if (trimmed === "") return;
     const isValid = /^[a-zA-Z0-9]+$/.test(trimmed);
+
+    if (trimmed === "" || !isValid) {
+      onError(
+        "Please enter a valid Pokémon name or ID (letters and numbers only)."
+      );
+      return;
+    }
     if (isValid) {
       onSearch(trimmed.toLowerCase());
       setInput("");

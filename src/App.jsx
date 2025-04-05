@@ -7,6 +7,11 @@ function App() {
   const [pokemonData, setPokemonData] = useState(null);
   const [error, setError] = useState("");
 
+  const triggerError = (message) => {
+    setPokemonData(null);
+    setError(`⚠️ ${message}`);
+  };
+
   const handleSearch = async (query) => {
     try {
       const response = await axios.get(
@@ -16,15 +21,15 @@ function App() {
       setError("");
     } catch (error) {
       setPokemonData(null);
-      setError("Pokemon not found");
-      console.error("Error fetching pokemon:", error);
+      triggerError("❌ Pokémon not found. Please try again.");
     }
   };
+
   return (
     <div className="container">
       <h1>Pokedex 🔴🟡🔵</h1>
-      <SearchBar onSearch={handleSearch} />
-      {error && <p className="error">{error}</p>}
+      <SearchBar onSearch={handleSearch} onError={triggerError} />
+      {error && <p className="error-message">{error}</p>}
       {pokemonData && <PokemonCard data={pokemonData} />}
     </div>
   );
