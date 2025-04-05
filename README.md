@@ -2,9 +2,12 @@
 
 A complete Pokémon experience featuring a **Pokédex** and a **Minigame**.
 
+## 🛠️ Tech Stack
+
 ![Vite](https://img.shields.io/badge/Vite-4468F2?style=for-the-badge&logo=vite&logoColor=white)
 ![React](https://img.shields.io/badge/React-61DAFB?style=for-the-badge&logo=react&logoColor=black)
 ![PokéAPI](https://img.shields.io/badge/PokéAPI-FFCB05?style=for-the-badge&logo=pokemon&logoColor=black)
+![Axios](https://img.shields.io/badge/Axios-5A29E4?style=for-the-badge&logo=axios&logoColor=white)
 
 ## 🚀 Features
 
@@ -20,17 +23,6 @@ A complete Pokémon experience featuring a **Pokédex** and a **Minigame**.
 - 🕹️ Interactive Pokémon game (TBD mechanics)
 - ⚡ Uses Pokémon API for gameplay
 - 🏆 High-score tracking
-
----
-
-## 🛠️ Tech Stack
-
-| Technology        | Usage              |
-| ----------------- | ------------------ |
-| **React (Vite)**  | Frontend framework |
-| **Framer Motion** | Animations         |
-| **Axios**         | API requests       |
-| **PokéAPI**       | Fetch Pokémon data |
 
 ---
 
