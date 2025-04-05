@@ -2,6 +2,10 @@
 
 A complete Pokémon experience featuring a **Pokédex** and a **Minigame**.
 
+![Vite](https://img.shields.io/badge/Vite-4468F2?style=for-the-badge&logo=vite&logoColor=white)
+![React](https://img.shields.io/badge/React-61DAFB?style=for-the-badge&logo=react&logoColor=black)
+![PokéAPI](https://img.shields.io/badge/PokéAPI-FFCB05?style=for-the-badge&logo=pokemon&logoColor=black)
+
 ## 🚀 Features
 
 ### 📖 Pokédex:
@@ -33,18 +37,20 @@ A complete Pokémon experience featuring a **Pokédex** and a **Minigame**.
 ## 📂 Project Structure
 
 ```
-/pokemon-project
-├── client/ (Frontend)
-│   ├── src/
-│   │   ├── components/ (Reusable UI)
-│   │   ├── pages/ (Different views)
-│   │   ├── assets/ (Images, icons)
-│   ├── public/ (Static assets)
-│   ├── package.json
-│   ├── index.html
-│   ├── vite.config.js
+📁 pokedex
+├── src/
+│   ├── components/
+│   ├── assets/
+│   ├── pages/
+│   ├── App.jsx
+│   ├── index.css
+│   └── main.jsx
+├── index.html
+├── eslint.config.js
+├── package.json
+├── package.lock.json
 ├── README.md
-├── .gitignore
+├── vite.config.js
 ```
 
 ---
@@ -53,9 +59,17 @@ A complete Pokémon experience featuring a **Pokédex** and a **Minigame**.
 
 ### 🎨 **Frontend (Pokédex + Minigame UI)**
 
+## 📦 Installation & Setup
+
 ```sh
-cd client
+# Clone the repo
+git clone https://github.com/Jackmaa/pokedex.git
+cd pokedex
+
+# Install dependencies
 npm install
+
+# Run the development server
 npm run dev
 ```
 
