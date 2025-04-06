@@ -52,7 +52,6 @@ A complete Pokémon experience featuring a **Pokédex** and a **Minigame**.
 ```sh
 # Clone the repo
 git clone https://github.com/Jackmaa/pokedex.git
-cd pokedex
 
 # Install dependencies
 npm install
