@@ -88,7 +88,7 @@ function PokedexGrid() {
     };
 
     fetchPokemon();
-  }, [selectedType, limit]);
+  }, [selectedType, limit, searchTerm]);
 
   // ✅ Filtered Pokémon based on search term
   const filteredList = searchTerm

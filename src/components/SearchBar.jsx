@@ -16,17 +16,28 @@ function SearchBar({ onSearch, onError }) {
     }
     if (isValid) {
       onSearch(trimmed.toLowerCase());
-      setInput("");
     }
   };
   return (
     <form onSubmit={handleSubmit} className="search-bar">
-      <input
-        type="text"
-        placeholder="Search a pokemon by ID or name"
-        value={input}
-        onChange={(e) => setInput(e.target.value)}
-      />
+      <div className="input-wrapper">
+        <input
+          type="text"
+          placeholder="Search a Pokémon by name or ID"
+          value={input}
+          onChange={(e) => setInput(e.target.value)}
+        />
+        {input && (
+          <button
+            type="button"
+            className="clear-button"
+            onClick={() => setInput("")}
+            aria-label="Clear input"
+          >
+            ❌
+          </button>
+        )}
+      </div>
       <button type="submit" aria-label="Search">
         🔍
       </button>
