@@ -1,6 +1,8 @@
 import SearchBar from "./SearchBar";
 import TypeFilter from "./TypeFilter";
 // import RecentList from "./RecentList"; // 🔜 soon!
+// import Favorites from "./Favorites"; // 🔜 soon!
+// import CompareBar from "./CompareBar"; // 🔜 soon!
 
 function SidebarPanel({ onSearch, onError, selectedType, onSelectType }) {
   return (
