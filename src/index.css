@@ -52,6 +52,32 @@ body {
   font-size: 1rem;
 }
 
+.autocomplete-dropdown {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  right: 0;
+  background: #fefefe;
+  border: 1px solid #333;
+  border-radius: 6px;
+  list-style: none;
+  padding: 0;
+  margin: 0.25rem 0 0 0;
+  z-index: 10;
+  max-height: 180px;
+  overflow-y: auto;
+}
+
+.autocomplete-dropdown li {
+  padding: 0.5rem 1rem;
+  cursor: pointer;
+  font-size: 0.95rem;
+}
+
+.autocomplete-dropdown li:hover {
+  background: #f1f1f1;
+}
+
 .pokedex-grid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));

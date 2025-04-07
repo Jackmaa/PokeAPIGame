@@ -1,7 +1,15 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import usePokemonNames from "../hooks/usePokemonNames";
 
 function SearchBar({ onSearch, onError }) {
   const [input, setInput] = useState("");
+  const nameList = usePokemonNames(input.length >= 1);
+  const [showSuggestions, setShowSuggestions] = useState(false);
+
+  // ✅ Filter suggestions reactively
+  const suggestions = nameList
+    .filter((name) => name.startsWith(input.toLowerCase()))
+    .slice(0, 5);
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -16,8 +24,10 @@ function SearchBar({ onSearch, onError }) {
     }
     if (isValid) {
       onSearch(trimmed.toLowerCase());
+      setShowSuggestions(false); // Hide dropdown
     }
   };
+
   return (
     <form onSubmit={handleSubmit} className="search-bar">
       <div className="input-wrapper">
@@ -25,19 +35,44 @@ function SearchBar({ onSearch, onError }) {
           type="text"
           placeholder="Search a Pokémon by name or ID"
           value={input}
-          onChange={(e) => setInput(e.target.value)}
+          onChange={(e) => {
+            setInput(e.target.value);
+            setShowSuggestions(true);
+          }}
         />
+
         {input && (
           <button
             type="button"
             className="clear-button"
-            onClick={() => setInput("")}
+            onClick={() => {
+              setInput("");
+              setShowSuggestions(false);
+            }}
             aria-label="Clear input"
           >
             ❌
           </button>
         )}
+
+        {showSuggestions && suggestions.length > 0 && (
+          <ul className="autocomplete-dropdown">
+            {suggestions.map((name) => (
+              <li
+                key={name}
+                onClick={() => {
+                  setInput(name);
+                  onSearch(name);
+                  setShowSuggestions(false);
+                }}
+              >
+                {name}
+              </li>
+            ))}
+          </ul>
+        )}
       </div>
+
       <button type="submit" aria-label="Search">
         🔍
       </button>
