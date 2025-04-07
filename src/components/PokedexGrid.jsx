@@ -1,11 +1,13 @@
 import { useState, useEffect } from "react";
 import TypeFilter from "./TypeFilter";
+import SearchBar from "./SearchBar"; // Don't forget this!
 import PokemonCard from "./PokemonCard";
 import axios from "axios";
 
 function PokedexGrid() {
   const [pokemonList, setPokemonList] = useState([]);
   const [selectedType, setSelectedType] = useState(null);
+  const [searchTerm, setSearchTerm] = useState("");
   const [limit, setLimit] = useState(20);
   const [loading, setLoading] = useState(true);
 
@@ -51,20 +53,32 @@ function PokedexGrid() {
           fetchedData = detailedData.filter(Boolean);
         }
 
+        if (searchTerm) {
+          try {
+            const res = await axios.get(
+              `https://pokeapi.co/api/v2/pokemon/${searchTerm}`
+            );
+            fetchedData = [res.data];
+          } catch (err) {
+            console.error("Error fetching Pokémon by ID or name:", err);
+            setLoading(false);
+          }
+        }
+
         setPokemonList(fetchedData);
         setLoading(false);
 
-        // ✅ Restore scroll position
+        // Restore scroll
         const savedScroll = sessionStorage.getItem("pokedexScroll");
         if (savedScroll) {
           requestAnimationFrame(() => {
             setTimeout(() => {
               window.scrollTo({
                 top: parseInt(savedScroll),
-                behavior: "instant", // or "auto"
+                behavior: "instant",
               });
               sessionStorage.removeItem("pokedexScroll");
-            }, 100); // Give layout time to render
+            }, 100);
           });
         }
       } catch (err) {
@@ -76,19 +90,33 @@ function PokedexGrid() {
     fetchPokemon();
   }, [selectedType, limit]);
 
+  // ✅ Filtered Pokémon based on search term
+  const filteredList = searchTerm
+    ? pokemonList // already filtered by direct fetch
+    : pokemonList.filter((p) =>
+        p.name.toLowerCase().includes(searchTerm.toLowerCase())
+      );
+
   if (loading) return <div className="pokeball-spinner"></div>;
 
   return (
     <>
+      <SearchBar
+        onSearch={(value) => {
+          setSearchTerm(value);
+          setSelectedType(null);
+        }}
+      />
       <TypeFilter
         onSelectType={(type) => {
-          setLimit(20); // ⬅️ Reset limit first
-          setSelectedType(type); // ⬅️ Then trigger fetch
+          setSearchTerm("");
+          setLimit(20);
+          setSelectedType(type);
         }}
         selectedType={selectedType}
       />
       <div className="pokedex-grid">
-        {pokemonList.map((pokemon) => (
+        {filteredList.map((pokemon) => (
           <PokemonCard key={pokemon.id} data={pokemon} />
         ))}
       </div>
