@@ -1,13 +1,9 @@
 import { useState, useEffect } from "react";
-import TypeFilter from "./TypeFilter";
-import SearchBar from "./SearchBar"; // Don't forget this!
 import PokemonCard from "./PokemonCard";
 import axios from "axios";
 
-function PokedexGrid() {
+function PokedexGrid({ selectedType, searchTerm }) {
   const [pokemonList, setPokemonList] = useState([]);
-  const [selectedType, setSelectedType] = useState(null);
-  const [searchTerm, setSearchTerm] = useState("");
   const [limit, setLimit] = useState(20);
   const [loading, setLoading] = useState(true);
 
@@ -103,20 +99,6 @@ function PokedexGrid() {
 
   return (
     <>
-      <SearchBar
-        onSearch={(value) => {
-          setSearchTerm(value);
-          setSelectedType(null);
-        }}
-      />
-      <TypeFilter
-        onSelectType={(type) => {
-          setSearchTerm("");
-          setLimit(20);
-          setSelectedType(type);
-        }}
-        selectedType={selectedType}
-      />
       <div className="pokedex-grid">
         {pokemonList.map((pokemon) => (
           <PokemonCard key={pokemon.id} data={pokemon} />
@@ -125,17 +107,18 @@ function PokedexGrid() {
         {!loading && pokemonList.length === 0 && searchTerm && (
           <p className="no-results">No results found for "{searchTerm}" 😢</p>
         )}
-      </div>
-      <div style={{ textAlign: "center", marginTop: "2rem" }}>
-        <button
-          className="load-more-button"
-          onClick={() => {
-            sessionStorage.setItem("pokedexScroll", window.scrollY);
-            setLimit(limit + 20);
-          }}
-        >
-          Load More
-        </button>
+
+        <div style={{ textAlign: "center", marginTop: "2rem" }}>
+          <button
+            className="load-more-button"
+            onClick={() => {
+              sessionStorage.setItem("pokedexScroll", window.scrollY);
+              setLimit(limit + 20);
+            }}
+          >
+            Load More
+          </button>
+        </div>
       </div>
     </>
   );

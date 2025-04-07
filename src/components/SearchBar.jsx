@@ -66,7 +66,7 @@ function SearchBar({ onSearch, onError }) {
             setShowSuggestions(true);
           }}
           onKeyDown={(e) => {
-            if (!showSuggestions || suggestions.length === 0) return;
+            // if (!showSuggestions || suggestions.length === 0) return;
 
             if (e.key === "ArrowDown") {
               e.preventDefault();
@@ -92,6 +92,7 @@ function SearchBar({ onSearch, onError }) {
             }
 
             if (e.key === "Escape") {
+              setInput("");
               setShowSuggestions(false);
               setSelectedIndex(-1);
             }
