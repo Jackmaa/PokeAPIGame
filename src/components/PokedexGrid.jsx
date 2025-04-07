@@ -60,8 +60,10 @@ function PokedexGrid() {
             );
             fetchedData = [res.data];
           } catch (err) {
-            console.error("Error fetching Pokémon by ID or name:", err);
+            console.error("❌ Pokémon not found:", err);
+            setPokemonList([]);
             setLoading(false);
+            return; // ✅ early exit if search fails
           }
         }
 
@@ -116,9 +118,13 @@ function PokedexGrid() {
         selectedType={selectedType}
       />
       <div className="pokedex-grid">
-        {filteredList.map((pokemon) => (
+        {pokemonList.map((pokemon) => (
           <PokemonCard key={pokemon.id} data={pokemon} />
         ))}
+
+        {!loading && pokemonList.length === 0 && searchTerm && (
+          <p className="no-results">No results found for "{searchTerm}" 😢</p>
+        )}
       </div>
       <div style={{ textAlign: "center", marginTop: "2rem" }}>
         <button
