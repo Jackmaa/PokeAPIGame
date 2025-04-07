@@ -40,6 +40,12 @@ function SearchBar({ onSearch, onError }) {
             setInput(value);
             setShowSuggestions(value.length > 0);
           }}
+          onKeyDown={(e) => {
+            if (e.key === "Escape") {
+              setShowSuggestions(false);
+              setInput("");
+            }
+          }}
         />
 
         {input && (
