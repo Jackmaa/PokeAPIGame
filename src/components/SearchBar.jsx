@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import usePokemonNames from "../hooks/usePokemonNames";
 
 function SearchBar({ onSearch, onError }) {
@@ -36,8 +36,9 @@ function SearchBar({ onSearch, onError }) {
           placeholder="Search a Pokémon by name or ID"
           value={input}
           onChange={(e) => {
-            setInput(e.target.value);
-            setShowSuggestions(true);
+            const value = e.target.value;
+            setInput(value);
+            setShowSuggestions(value.length > 0);
           }}
         />
 
