@@ -78,6 +78,11 @@ body {
   background: #f1f1f1;
 }
 
+.autocomplete-dropdown li.selected {
+  background-color: #f1f1f1;
+  font-weight: bold;
+}
+
 .pokedex-grid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
