@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import usePokemonNames from "../hooks/usePokemonNames";
 import useDebouncedValue from "../hooks/useDebouncedValue";
 import { AnimatePresence, motion } from "framer-motion";
@@ -9,6 +9,10 @@ function SearchBar({ onSearch, onError }) {
   const nameList = usePokemonNames(input.length >= 1);
   const [showSuggestions, setShowSuggestions] = useState(false);
   const [selectedIndex, setSelectedIndex] = useState(-1);
+
+  useEffect(() => {
+    setShowSuggestions(debouncedInput.length > 0);
+  }, [debouncedInput]);
 
   // ✅ Filter suggestions reactively
   const suggestions = nameList
