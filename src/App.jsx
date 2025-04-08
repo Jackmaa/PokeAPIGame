@@ -23,7 +23,14 @@ function App() {
         }}
       />
 
-      <PokedexGrid selectedType={selectedType} searchTerm={searchTerm} />
+      <PokedexGrid
+        selectedType={selectedType}
+        searchTerm={searchTerm}
+        onSelectType={(type) => {
+          setSearchTerm("");
+          setSelectedType(type);
+        }}
+      />
     </div>
   );
 }

@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import axios from "axios";
 import typeColors from "../utils/typeColors";
+import typeEmojis from "../utils/typeEmojis"; // 👈 N'oublie ça !
 
 function TypeFilter({ onSelectType, selectedType }) {
   const [types, setTypes] = useState([]);
@@ -35,26 +36,29 @@ function TypeFilter({ onSelectType, selectedType }) {
       fontWeight: "bold",
       cursor: "pointer",
       transition: "all 0.2s ease",
+      display: "flex",
+      alignItems: "center",
+      gap: "6px",
     };
   };
 
   return (
-    <div className="type-filter">
+    <div className="type-filter" style={{ display: "flex", flexWrap: "wrap" }}>
       <button
         onClick={() => onSelectType(null)}
         style={renderButton("all", selectedType === null)}
         title="Show all Pokémon"
       >
-        All
+        {typeEmojis["all"]} All
       </button>
       {types.map((type) => (
         <button
           key={type.name}
           onClick={() => onSelectType(type.name)}
           style={renderButton(type.name, selectedType === type.name)}
-          title={`Show ${type.name} type Pokémon`}
+          title={`Show ${type.name}-type Pokémon`}
         >
-          {type.name.toUpperCase()}
+          {typeEmojis[type.name] || "🔹"} {type.name.toUpperCase()}
         </button>
       ))}
     </div>

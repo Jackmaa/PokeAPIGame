@@ -1,9 +1,10 @@
 import { motion } from "framer-motion";
 import { useState, useEffect, use } from "react";
-import typeColors from "../utils/typeColors";
-import TypeBadge from "./TypeBadge";
 
-function PokemonCard({ data }) {
+import typeColors from "../utils/typeColors";
+import typeEmojis from "../utils/typeEmojis";
+
+function PokemonCard({ data, onSelectType }) {
   if (!data) return null;
   // ✅ Get the color of the Pokémon type
   const primaryType = data.types[0]?.type.name;
@@ -53,12 +54,31 @@ function PokemonCard({ data }) {
         {data.name.charAt(0).toUpperCase() + data.name.slice(1)}
       </h2>
       <img src={data.sprites.front_default} alt={data.name} />
-      <div className="type-badges">
+      <div
+        className="pokemon-types"
+        style={{ display: "flex", gap: "0.5rem", flexWrap: "wrap" }}
+      >
         {data.types.map((t) => (
-          <span key={t.type.name}>
-            <TypeBadge type={t.type.name} />
-            {/* Using TypeBadge component instead of inline styles */}
-          </span>
+          <button
+            key={t.type.name}
+            onClick={() => onSelectType(t.type.name)} // tu passes ça en prop ou contexte
+            title={`Filter by ${t.type.name} type`}
+            style={{
+              backgroundColor: typeColors[t.type.name] + "22",
+              color: typeColors[t.type.name],
+              border: `1px solid ${typeColors[t.type.name]}`,
+              borderRadius: "0.5rem",
+              padding: "0.2rem 0.5rem",
+              fontSize: "0.75rem",
+              fontWeight: "bold",
+              display: "flex",
+              alignItems: "center",
+              gap: "4px",
+              cursor: "pointer",
+            }}
+          >
+            {typeEmojis[t.type.name] || "🔹"} {t.type.name.toUpperCase()}
+          </button>
         ))}
       </div>
       <p>
