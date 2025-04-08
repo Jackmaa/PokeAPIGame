@@ -1,6 +1,6 @@
-import { useState, useEffect } from "react";
-import PokemonCard from "./PokemonCard";
-import axios from "axios";
+import { useState, useEffect } from 'react';
+import PokemonCard from './PokemonCard';
+import axios from 'axios';
 
 function PokedexGrid({ selectedType, searchTerm, onSelectType }) {
   const [pokemonList, setPokemonList] = useState([]);
@@ -18,14 +18,14 @@ function PokedexGrid({ selectedType, searchTerm, onSelectType }) {
             `https://pokeapi.co/api/v2/type/${selectedType}`
           );
           const pokemonsOfType = res.data.pokemon
-            .map((p) => p.pokemon)
+            .map(p => p.pokemon)
             .slice(0, limit);
 
           const detailedData = await Promise.all(
-            pokemonsOfType.map((p) =>
+            pokemonsOfType.map(p =>
               axios
                 .get(p.url)
-                .then((res) => res.data)
+                .then(res => res.data)
                 .catch(() => null)
             )
           );
@@ -38,10 +38,10 @@ function PokedexGrid({ selectedType, searchTerm, onSelectType }) {
           const results = res.data.results;
 
           const detailedData = await Promise.all(
-            results.map((p) =>
+            results.map(p =>
               axios
                 .get(p.url)
-                .then((res) => res.data)
+                .then(res => res.data)
                 .catch(() => null)
             )
           );
@@ -56,7 +56,8 @@ function PokedexGrid({ selectedType, searchTerm, onSelectType }) {
             );
             fetchedData = [res.data];
           } catch (err) {
-            console.error("❌ Pokémon not found:", err);
+            // eslint-disable-next-line no-console
+            console.error('❌ Pokémon not found:', err);
             setPokemonList([]);
             setLoading(false);
             return; // ✅ early exit if search fails
@@ -67,20 +68,28 @@ function PokedexGrid({ selectedType, searchTerm, onSelectType }) {
         setLoading(false);
 
         // Restore scroll
-        const savedScroll = sessionStorage.getItem("pokedexScroll");
-        if (savedScroll) {
-          requestAnimationFrame(() => {
-            setTimeout(() => {
-              window.scrollTo({
-                top: parseInt(savedScroll),
-                behavior: "instant",
+        if (
+          typeof sessionStorage !== 'undefined' &&
+          typeof window !== 'undefined'
+        ) {
+          const savedScroll = sessionStorage.getItem('pokedexScroll');
+          if (savedScroll) {
+            if (typeof requestAnimationFrame !== 'undefined') {
+              requestAnimationFrame(() => {
+                setTimeout(() => {
+                  window.scrollTo({
+                    top: parseInt(savedScroll),
+                    behavior: 'instant',
+                  });
+                  sessionStorage.removeItem('pokedexScroll');
+                }, 100);
               });
-              sessionStorage.removeItem("pokedexScroll");
-            }, 100);
-          });
+            }
+          }
         }
       } catch (err) {
-        console.error("Error loading Pokémon:", err);
+        // eslint-disable-next-line no-console
+        console.error('Error loading Pokémon:', err);
         setLoading(false);
       }
     };
@@ -91,7 +100,7 @@ function PokedexGrid({ selectedType, searchTerm, onSelectType }) {
   // ✅ Filtered Pokémon based on search term
   const filteredList = searchTerm
     ? pokemonList // already filtered by direct fetch
-    : pokemonList.filter((p) =>
+    : pokemonList.filter(p =>
         p.name.toLowerCase().includes(searchTerm.toLowerCase())
       );
 
@@ -100,7 +109,7 @@ function PokedexGrid({ selectedType, searchTerm, onSelectType }) {
   return (
     <>
       <div className="pokedex-grid">
-        {pokemonList.map((pokemon) => (
+        {filteredList.map(pokemon => (
           <PokemonCard
             key={pokemon.id}
             data={pokemon}
@@ -112,11 +121,11 @@ function PokedexGrid({ selectedType, searchTerm, onSelectType }) {
           <p className="no-results">No results found for "{searchTerm}" 😢</p>
         )}
 
-        <div style={{ textAlign: "center", marginTop: "2rem" }}>
+        <div style={{ textAlign: 'center', marginTop: '2rem' }}>
           <button
             className="load-more-button"
             onClick={() => {
-              sessionStorage.setItem("pokedexScroll", window.scrollY);
+              sessionStorage.setItem('pokedexScroll', window.scrollY);
               setLimit(limit + 20);
             }}
           >

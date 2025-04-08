@@ -1,10 +1,11 @@
-import { useState, useEffect } from "react";
-import usePokemonNames from "../hooks/usePokemonNames";
-import useDebouncedValue from "../hooks/useDebouncedValue";
-import { AnimatePresence, motion } from "framer-motion";
+import { useState, useEffect } from 'react';
+import usePokemonNames from '../hooks/usePokemonNames';
+import useDebouncedValue from '../hooks/useDebouncedValue';
+// eslint-disable-next-line no-unused-vars
+import { AnimatePresence, motion } from 'framer-motion';
 
 function SearchBar({ onSearch, onError }) {
-  const [input, setInput] = useState("");
+  const [input, setInput] = useState('');
   const debouncedInput = useDebouncedValue(input, 200);
   const nameList = usePokemonNames(input.length >= 1);
   const [showSuggestions, setShowSuggestions] = useState(false);
@@ -14,25 +15,24 @@ function SearchBar({ onSearch, onError }) {
     setShowSuggestions(debouncedInput.length > 0);
   }, [debouncedInput]);
 
-  // ✅ Filter suggestions reactively
   const suggestions = nameList
-    .filter((name) => name.startsWith(debouncedInput.toLowerCase()))
+    .filter(name => name.startsWith(debouncedInput.toLowerCase()))
     .slice(0, 5);
 
-  const handleSubmit = (e) => {
+  const handleSubmit = e => {
     e.preventDefault();
     const trimmed = input.trim();
     const isValid = /^[a-zA-Z0-9]+$/.test(trimmed);
 
-    if (trimmed === "" || !isValid) {
+    if (trimmed === '' || !isValid) {
       onError(
-        "Please enter a valid Pokémon name or ID (letters and numbers only)."
+        'Please enter a valid Pokémon name or ID (letters and numbers only).'
       );
       return;
     }
     if (isValid) {
       onSearch(trimmed.toLowerCase());
-      setShowSuggestions(false); // Hide dropdown
+      setShowSuggestions(false);
     }
   };
 
@@ -45,7 +45,7 @@ function SearchBar({ onSearch, onError }) {
       aria-expanded={showSuggestions}
       aria-controls="autocomplete-dropdown"
       aria-activedescendant={
-        selectedIndex >= 0 ? suggestions[selectedIndex] : ""
+        selectedIndex >= 0 ? suggestions[selectedIndex] : ''
       }
       aria-autocomplete="list"
     >
@@ -55,34 +55,32 @@ function SearchBar({ onSearch, onError }) {
         onFocus={() => {
           if (input.length > 0) setShowSuggestions(true);
         }}
-        tabIndex={-1} // make it focusable as a wrapper
+        tabIndex={-1}
       >
         <input
           type="text"
           placeholder="Search a Pokémon by name or ID"
           value={input}
-          onChange={(e) => {
+          onChange={e => {
             setInput(e.target.value);
             setShowSuggestions(true);
           }}
-          onKeyDown={(e) => {
-            // if (!showSuggestions || suggestions.length === 0) return;
-
-            if (e.key === "ArrowDown") {
+          onKeyDown={e => {
+            if (e.key === 'ArrowDown') {
               e.preventDefault();
-              setSelectedIndex((prev) =>
+              setSelectedIndex(prev =>
                 prev < suggestions.length - 1 ? prev + 1 : 0
               );
             }
 
-            if (e.key === "ArrowUp") {
+            if (e.key === 'ArrowUp') {
               e.preventDefault();
-              setSelectedIndex((prev) =>
+              setSelectedIndex(prev =>
                 prev > 0 ? prev - 1 : suggestions.length - 1
               );
             }
 
-            if (e.key === "Enter" && selectedIndex >= 0) {
+            if (e.key === 'Enter' && selectedIndex >= 0) {
               e.preventDefault();
               const selected = suggestions[selectedIndex];
               setInput(selected);
@@ -91,8 +89,8 @@ function SearchBar({ onSearch, onError }) {
               setSelectedIndex(-1);
             }
 
-            if (e.key === "Escape") {
-              setInput("");
+            if (e.key === 'Escape') {
+              setInput('');
               setShowSuggestions(false);
               setSelectedIndex(-1);
             }
@@ -103,7 +101,7 @@ function SearchBar({ onSearch, onError }) {
             type="button"
             className="clear-button"
             onClick={() => {
-              setInput("");
+              setInput('');
               setShowSuggestions(false);
             }}
             aria-label="Clear input"
@@ -125,10 +123,9 @@ function SearchBar({ onSearch, onError }) {
                 suggestions.map((name, index) => (
                   <li
                     key={name}
-                    className={index === selectedIndex ? "selected" : ""}
+                    className={index === selectedIndex ? 'selected' : ''}
                     onMouseEnter={() => setSelectedIndex(index)}
                     onMouseDown={() => {
-                      // Use mouseDown instead of click to prevent onBlur firing first
                       setInput(name);
                       onSearch(name);
                       setShowSuggestions(false);

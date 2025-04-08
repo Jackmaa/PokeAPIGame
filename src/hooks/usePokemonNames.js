@@ -1,29 +1,27 @@
-// This hook fetches a list of Pokémon names from the PokeAPI when the `shouldLoad` parameter is true.
-// It uses the `useEffect` hook to trigger the API call and updates the state with the fetched names.
+import { useEffect, useState } from 'react';
+import axios from 'axios';
 
-import { useEffect, useState } from "react";
-import axios from "axios";
-
-export default function usePokemonNames(shouldLoad) {
-  const [nameList, setNameList] = useState([]);
+function usePokemonNames() {
+  const [names, setNames] = useState([]);
 
   useEffect(() => {
-    if (!shouldLoad || nameList.length > 0) return;
-
     const fetchNames = async () => {
       try {
         const res = await axios.get(
-          "https://pokeapi.co/api/v2/pokemon?limit=1000"
+          'https://pokeapi.co/api/v2/pokemon?limit=151'
         );
-        const names = res.data.results.map((p) => p.name);
-        setNameList(names);
+        const results = res.data.results.map(p => p.name);
+        setNames(results);
       } catch (err) {
-        console.error("Error fetching Pokémon names:", err);
+        // eslint-disable-next-line no-console
+        console.error('Failed to fetch Pokémon names:', err);
       }
     };
 
     fetchNames();
-  }, [shouldLoad, nameList]);
+  }, []);
 
-  return nameList;
+  return names;
 }
+
+export default usePokemonNames;
