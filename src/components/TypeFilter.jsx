@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import axios from "axios";
+import typeColors from "../utils/typeColors";
 
 function TypeFilter({ onSelectType, selectedType }) {
   const [types, setTypes] = useState([]);
@@ -9,8 +10,8 @@ function TypeFilter({ onSelectType, selectedType }) {
       try {
         const res = await axios.get("https://pokeapi.co/api/v2/type");
         const filteredTypes = res.data.results.filter(
-          (types) => !["shadow", "stellar", "unknown"].includes(types.name)
-        ); // ← remove shadow and unknown types (shadow is a glitch type, unknown is a glitch type)
+          (type) => !["shadow", "stellar", "unknown"].includes(type.name)
+        );
         setTypes(filteredTypes);
       } catch (error) {
         console.error("Error fetching types:", error);
@@ -18,11 +19,31 @@ function TypeFilter({ onSelectType, selectedType }) {
     };
     fetchTypes();
   }, []);
+
+  const renderButton = (typeName, isSelected) => {
+    const color = typeColors[typeName] || "#888";
+    const bg = isSelected ? color : `${color}22`;
+    const text = isSelected ? "#fff" : color;
+
+    return {
+      backgroundColor: bg,
+      color: text,
+      border: `2px solid ${color}`,
+      borderRadius: "1rem",
+      padding: "0.4rem 0.8rem",
+      margin: "0.3rem",
+      fontWeight: "bold",
+      cursor: "pointer",
+      transition: "all 0.2s ease",
+    };
+  };
+
   return (
     <div className="type-filter">
       <button
         onClick={() => onSelectType(null)}
-        className={selectedType === null ? "selected" : ""}
+        style={renderButton("all", selectedType === null)}
+        title="Show all Pokémon"
       >
         All
       </button>
@@ -30,12 +51,14 @@ function TypeFilter({ onSelectType, selectedType }) {
         <button
           key={type.name}
           onClick={() => onSelectType(type.name)}
-          className={selectedType === type.name ? "selected" : ""}
+          style={renderButton(type.name, selectedType === type.name)}
+          title={`Filter by ${type.name}-type Pokémon`}
         >
-          {type.name.charAt(0).toUpperCase() + type.name.slice(1)}
+          {type.name.toUpperCase()}
         </button>
       ))}
     </div>
   );
 }
+
 export default TypeFilter;
