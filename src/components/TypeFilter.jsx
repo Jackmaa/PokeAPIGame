@@ -52,7 +52,7 @@ function TypeFilter({ onSelectType, selectedType }) {
           key={type.name}
           onClick={() => onSelectType(type.name)}
           style={renderButton(type.name, selectedType === type.name)}
-          title={`Filter by ${type.name}-type Pokémon`}
+          title={`Show ${type.name} type Pokémon`}
         >
           {type.name.toUpperCase()}
         </button>
