@@ -1,9 +1,13 @@
 import { motion } from "framer-motion";
 import { useState, useEffect, use } from "react";
+import typeColors from "../utils/typeColors";
+import TypeBadge from "./TypeBadge";
 
 function PokemonCard({ data }) {
   if (!data) return null;
-
+  // ✅ Get the color of the Pokémon type
+  const primaryType = data.types[0]?.type.name;
+  const bgColor = typeColors[primaryType] || "#777";
   const [isFav, setIsFav] = useState(false);
 
   // ✅ Check localStorage on mount
@@ -32,6 +36,11 @@ function PokemonCard({ data }) {
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.4, ease: "easeOut" }}
+      style={{
+        background: `${bgColor}20`, // couleur transparente
+        border: `2px solid ${bgColor}`,
+        borderRadius: "1rem",
+      }}
     >
       <button
         onClick={toggleFav}
@@ -40,12 +49,18 @@ function PokemonCard({ data }) {
       >
         {isFav ? "⭐" : "☆"}
       </button>
-      <h2>{data.name.charAt(0).toUpperCase() + data.name.slice(1)}</h2>
+      <h2 style={{ color: bgColor, textShadow: `0 0 1px rgb(255, 255, 255)` }}>
+        {data.name.charAt(0).toUpperCase() + data.name.slice(1)}
+      </h2>
       <img src={data.sprites.front_default} alt={data.name} />
-      <p>
-        <strong>Type: </strong>
-        {data.types.map((t) => t.type.name).join(", ")}
-      </p>
+      <div className="type-badges">
+        {data.types.map((t) => (
+          <span key={t.type.name}>
+            <TypeBadge type={t.type.name} />
+            {/* Using TypeBadge component instead of inline styles */}
+          </span>
+        ))}
+      </div>
       <p>
         <strong>Height: </strong>
         {data.height}
