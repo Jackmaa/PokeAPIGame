@@ -5,11 +5,8 @@ import typeColors from '../utils/typeColors';
 import typeEmojis from '../utils/typeEmojis';
 
 function PokemonCard({ data, onSelectType }) {
-  const { favorites, isFavorite, toggleFavorite } = useFavorites();
-  const isFav = useMemo(
-    () => isFavorite(data.id),
-    [favorites, data.id, isFavorite]
-  );
+  const { isFavorite, toggleFavorite } = useFavorites();
+  const isFav = useMemo(() => isFavorite(data.id), [data.id, isFavorite]);
 
   if (!data) return null;
 
