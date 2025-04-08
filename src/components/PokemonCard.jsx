@@ -56,7 +56,12 @@ function PokemonCard({ data, onSelectType }) {
       <img src={data.sprites.front_default} alt={data.name} />
       <div
         className="pokemon-types"
-        style={{ display: "flex", gap: "0.5rem", flexWrap: "wrap" }}
+        style={{
+          display: "flex",
+          gap: "0.5rem",
+          flexWrap: "wrap",
+          justifyContent: "center",
+        }}
       >
         {data.types.map((t) => (
           <button
