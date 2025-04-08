@@ -1,5 +1,7 @@
 import { useMemo } from 'react';
 import { motion } from 'framer-motion';
+import { useNavigate } from 'react-router-dom';
+import AnimatedSprite from './AnimatedSprites';
 import useFavorites from '../hooks/useFavorites';
 import typeColors from '../utils/typeColors';
 import typeEmojis from '../utils/typeEmojis';
@@ -7,6 +9,7 @@ import typeEmojis from '../utils/typeEmojis';
 function PokemonCard({ data, onSelectType }) {
   const { isFavorite, toggleFavorite } = useFavorites();
   const isFav = useMemo(() => isFavorite(data.id), [data.id, isFavorite]);
+  const navigate = useNavigate();
 
   if (!data) return null;
 
@@ -24,6 +27,7 @@ function PokemonCard({ data, onSelectType }) {
         border: `2px solid ${bgColor}`,
         borderRadius: '1rem',
       }}
+      onClick={() => navigate(`/pokemon/${data.id}`)}
     >
       <button
         onClick={() => toggleFavorite(data)}
@@ -35,7 +39,7 @@ function PokemonCard({ data, onSelectType }) {
       <h2 style={{ color: bgColor, textShadow: '0 0 1px rgb(255, 255, 255)' }}>
         {data.name.charAt(0).toUpperCase() + data.name.slice(1)}
       </h2>
-      <img src={data.sprites.front_default} alt={data.name} />
+      <AnimatedSprite sprites={data.sprites} alt={data.name} size={96} float />
       <div
         className="pokemon-types"
         style={{
