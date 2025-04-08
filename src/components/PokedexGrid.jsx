@@ -2,9 +2,15 @@ import { useState, useEffect } from 'react';
 import PokemonCard from './PokemonCard';
 import axios from 'axios';
 
-function PokedexGrid({ selectedType, searchTerm, onSelectType }) {
+function PokedexGrid({
+  selectedType,
+  searchTerm,
+  onSelectType,
+  limit,
+  setLimit,
+}) {
   const [pokemonList, setPokemonList] = useState([]);
-  const [limit, setLimit] = useState(20);
+
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {

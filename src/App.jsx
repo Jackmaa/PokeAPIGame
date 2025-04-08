@@ -6,6 +6,7 @@ import SidebarPanel from './components/SidebarPanel';
 function App() {
   const [searchTerm, setSearchTerm] = useState('');
   const [selectedType, setSelectedType] = useState(null);
+  const [limit, setLimit] = useState(20);
   const [error, setError] = useState(null);
   return (
     <div className="main-layout">
@@ -19,6 +20,7 @@ function App() {
         onSelectType={type => {
           setSearchTerm('');
           setSelectedType(type);
+          setLimit(20);
         }}
       />
 
@@ -29,6 +31,8 @@ function App() {
           setSearchTerm('');
           setSelectedType(type);
         }}
+        limit={limit}
+        setLimit={setLimit}
       />
     </div>
   );
