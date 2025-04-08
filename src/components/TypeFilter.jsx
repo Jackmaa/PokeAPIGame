@@ -25,7 +25,8 @@ function TypeFilter({ onSelectType, selectedType }) {
   const renderButton = (typeName, isSelected) => {
     const color = typeColors[typeName] || '#888';
     const bg = isSelected ? color : `${color}22`;
-    const text = isSelected ? '#fff' : color;
+
+    const text = typeName === 'all' ? '#FFF' : isSelected ? '#fff' : color;
 
     return {
       backgroundColor: bg,
@@ -50,7 +51,7 @@ function TypeFilter({ onSelectType, selectedType }) {
         style={renderButton('all', selectedType === null)}
         title="Show all Pokémon"
       >
-        {typeEmojis['all']} All
+        {typeEmojis['all']} ALL
       </button>
       {types.map(type => (
         <button
