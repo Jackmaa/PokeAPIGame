@@ -1,50 +1,83 @@
 import { useEffect, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import AnimatedSprites from './AnimatedSprites';
 
 function EvolutionChain({ species }) {
+  const [evolutionChain, setEvolutionChain] = useState(null);
   const [chainSprites, setChainSprites] = useState([]);
   const navigate = useNavigate();
 
+  // Étape 1: Fetch de la chaîne d'évolution
   useEffect(() => {
-    const fetchEvolution = async () => {
+    const fetchEvolutionChain = async () => {
       try {
-        const evoUrl = species?.evolution_chain?.url;
-        if (!evoUrl) return;
-
-        const res = await axios.get(evoUrl);
-        const flatChain = [];
-
-        const walkChain = async node => {
-          const speciesName = node.species.name;
-          const pokeRes = await axios.get(
-            `https://pokeapi.co/api/v2/pokemon/${speciesName}`
-          );
-          flatChain.push({
-            name: speciesName,
-            id: pokeRes.data.id,
-            sprites: pokeRes.data.sprites,
-          });
-
-          if (node.evolves_to.length > 0) {
-            await walkChain(node.evolves_to[0]); // On prend le premier chemin seulement
-          }
-        };
-
-        await walkChain(res.data.chain);
-        setChainSprites(flatChain);
+        if (!species?.evolution_chain?.url) return;
+        const res = await axios.get(species.evolution_chain.url);
+        setEvolutionChain(res.data.chain);
       } catch (err) {
-        console.error('❌ Failed to load evolution chain:', err);
+        console.error('Erreur chargement chaîne évolution :', err);
       }
     };
-
-    fetchEvolution();
+    fetchEvolutionChain();
   }, [species]);
 
-  if (chainSprites.length === 0) return null;
+  // Étape 2: Parser la chaîne d’évolution en liste de noms
+  const extractNames = chain => {
+    const names = [];
+    let current = chain;
+    while (current) {
+      names.push(current.species.name);
+      current = current.evolves_to?.[0];
+    }
+    return names;
+  };
 
+  // Étape 3: Récupération des sprites
+  useEffect(() => {
+    const fetchSprites = async () => {
+      if (!evolutionChain) return;
+      const names = extractNames(evolutionChain);
+
+      try {
+        const data = await Promise.all(
+          names.map(async name => {
+            const res = await axios.get(
+              `https://pokeapi.co/api/v2/pokemon/${name}`
+            );
+            return {
+              id: res.data.id,
+              name: res.data.name,
+              sprites: res.data.sprites,
+            };
+          })
+        );
+        setChainSprites(data);
+      } catch (err) {
+        console.error('Erreur chargement sprites évolution :', err);
+      }
+    };
+    fetchSprites();
+  }, [evolutionChain]);
+
+  // 🧪 Sécurité visuelle
+  if (!species?.evolution_chain?.url) {
+    return (
+      <div className="evolution-chain">
+        <h3>🧬 Evolution Chain</h3>
+        <p style={{ fontStyle: 'italic' }}>
+          This form has no evolution chain available.
+        </p>
+      </div>
+    );
+  }
+
+  if (chainSprites.length === 0) {
+    return <div className="pokeball-spinner"></div>;
+  }
+
+  // ✅ Rendu final
   return (
     <div className="evolution-chain">
       <h3 style={{ marginBottom: '1rem' }}>🧬 Evolution Chain</h3>

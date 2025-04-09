@@ -15,7 +15,7 @@ function PokemonCard({ data, onSelectType }) {
   const bgColor = typeColors[data.types[0]?.type.name] || '#777';
   const handleClick = () => {
     triggerTransition(bgColor, () => {
-      navigate(`/pokemon/${data.id}`);
+      navigate(`/pokemon/${data.name}`);
     });
   };
 

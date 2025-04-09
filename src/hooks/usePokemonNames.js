@@ -8,7 +8,7 @@ function usePokemonNames() {
     const fetchNames = async () => {
       try {
         const res = await axios.get(
-          'https://pokeapi.co/api/v2/pokemon?limit=1000'
+          'https://pokeapi.co/api/v2/pokemon?limit=100000'
         );
         const results = res.data.results.map(p => p.name);
         setNames(results);
