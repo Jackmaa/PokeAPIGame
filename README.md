@@ -32,10 +32,10 @@ A complete Pokémon experience featuring a **Pokédex** and a **Minigame**.
 📁 pokedex
 ├── src/
 │   ├── components/     # UI + Logic components
-    │    └── ui/        # Reusable atomic UI (Button, StatBar, Loader, etc.)
+│   │    └── ui/        # Reusable atomic UI (Button, StatBar, Loader, etc.)
 │   ├── hooks/
 │   ├── pages/
-    ├── utils/              # Helpers (typeColors, getSafeBaseName, etc.)
+│   ├── utils/              # Helpers (typeColors, getSafeBaseName, etc.)
 │   ├── App.jsx
 │   ├── index.css
 │   └── main.jsx
