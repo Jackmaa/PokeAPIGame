@@ -13,6 +13,7 @@ function PokemonDetails() {
   const [pokemon, setPokemon] = useState(null);
   const [species, setSpecies] = useState(null);
   const [error, setError] = useState(false);
+  const [forms, setForms] = useState([]);
 
   // 🔐 Sécurise les noms spéciaux comme charizard-mega-x
   const getSafeBaseName = name => {
@@ -49,6 +50,8 @@ function PokemonDetails() {
           `https://pokeapi.co/api/v2/pokemon-species/${safeName}`
         );
         setSpecies(res2.data);
+        const formList = res2.data.varieties.map(v => v.pokemon.name);
+        setForms(formList);
       } catch (err) {
         console.error('Erreur chargement détail Pokémon:', err);
         setError(true);
@@ -140,6 +143,39 @@ function PokemonDetails() {
         <strong>Pokédex Entry:</strong> <br />
         <em>{description}</em>
       </p>
+      {forms.length > 1 && (
+        <motion.div
+          initial={{ opacity: 0, y: 10 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.2 }}
+          style={{ marginBottom: '1rem' }}
+        >
+          <h4 style={{ marginBottom: '0.5rem' }}>Available Forms:</h4>
+          <div style={{ display: 'flex', gap: '0.5rem', flexWrap: 'wrap' }}>
+            {forms.map(formName => (
+              <motion.button
+                key={formName}
+                onClick={() => navigate(`/pokemon/${formName}`)}
+                whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 0.95 }}
+                style={{
+                  padding: '0.3rem 0.8rem',
+                  backgroundColor: formName === id ? color : '#eee',
+                  color: formName === id ? '#fff' : '#333',
+                  border:
+                    formName === id ? `1px solid ${color}` : '1px solid #ccc',
+                  borderRadius: '0.5rem',
+                  cursor: 'pointer',
+                  fontWeight: 'bold',
+                  transition: 'all 0.2s ease-in-out',
+                }}
+              >
+                {formName.replaceAll('-', ' ').toUpperCase()}
+              </motion.button>
+            ))}
+          </div>
+        </motion.div>
+      )}
 
       {pokemon.stats?.length > 0 && (
         <>
