@@ -1,0 +1,61 @@
+
+✅ PokedexAPI – Refacto Checklist
+====================================
+
+1. 🧠 Hooks custom (/hooks)
+------------------------------
+🎯 Sortir la logique métier des composants
+
+- [x] usePokemonDetails(id)
+- [ ] usePokemonList() – liste + recherche + filtres
+- [ ] useEvolutionChain(url) – abstraction de la chaîne
+- [ ] useFormSprites(forms) – récup des sprites des formes
+
+2. 🧱 UI Components (/components/ui)
+---------------------------------------
+🎯 Créer des composants stylés et réutilisables
+
+- [x] Button.jsx – variantes, fullWidth, animations
+- [x] FavButton.jsx
+- [x] Loader (pokéball CSS ✅)
+- [ ] BackButton.jsx – composant stylisé de retour
+
+3. 🧩 Composants logiques
+--------------------------
+🎯 Alléger les pages en composants clairs
+
+- [x] FormSelector.jsx – boutons + sprites
+- [ ] EvolutionStep.jsx – un maillon de la chaîne
+- [ ] PokemonCardMini.jsx – carte compacte (favoris, historique…)
+
+4. ⚙️ Utils / Helpers (/utils)
+-------------------------------
+🎯 Centraliser helpers, éviter duplication
+
+- [x] typeColors.js
+- [x] typeEmojis.js
+- [x] getSafeBaseName(name)
+- [ ] normalizeName(name) – pour affichage propre
+- [ ] formatID(id) – style #025
+
+5. 📄 Pages
+------------
+🎯 Refacto structure de page
+
+- [x] PokemonDetails.jsx – logique + affichage clair
+- [ ] Home.jsx – grille Pokédex + filtres + pagination
+- [ ] Isoler SearchBar.jsx, FilterPanel.jsx, etc.
+
+6. 🔒 Sécurité / Robustesse
+----------------------------
+- [x] Fallback espèces (✔️ dans usePokemonDetails)
+- [x] null checks : sprites, stats, évolutions
+- [ ] ErrorMessage.jsx pour UX clean
+- [ ] Animation propre du loader
+
+7. 🧬 UX / Animations (bonus)
+------------------------------
+- [ ] Transition d’évolution stylée
+- [ ] Feedback animé sur favori (scale/glow ?)
+- [ ] Sprite hover = rebond ou pulse
+- [ ] Effet shiny glitch ou halo temporaire
