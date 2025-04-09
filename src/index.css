@@ -223,12 +223,15 @@ body {
   transform: scale(1.05);
 }
 
+body.is-transitioning {
+  overflow: hidden;
+}
+
 .battle-intro {
   position: fixed;
   inset: 0;
-  background: rgba(0, 0, 0, 0.185);
-  overflow: hidden;
-  z-index: 9999;
+  background: black;
+  z-index: 999999;
   pointer-events: none;
 }
 
@@ -261,12 +264,12 @@ body {
   }
 }
 .battle-intro.fade-out {
-  animation: fadeOut 0.5s ease-in forwards;
+  animation: fadeOut 0.4s ease forwards;
 }
 
 @keyframes fadeOut {
   to {
     opacity: 0;
-    pointer-events: none;
+    visibility: hidden;
   }
 }
