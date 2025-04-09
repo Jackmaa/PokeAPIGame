@@ -14,6 +14,7 @@ function PokemonDetails() {
   const [species, setSpecies] = useState(null);
   const [error, setError] = useState(false);
   const [forms, setForms] = useState([]);
+  const [showShiny, setShowShiny] = useState(false);
 
   // 🔐 Sécurise les noms spéciaux comme charizard-mega-x
   const getSafeBaseName = name => {
@@ -131,12 +132,29 @@ function PokemonDetails() {
       <h1 style={{ color }}>
         {typeEmojis[primaryType]} {pokemon.name.toUpperCase()}
       </h1>
+      <div style={{ margin: '1rem 0' }}>
+        <button
+          onClick={() => setShowShiny(!showShiny)}
+          style={{
+            backgroundColor: color,
+            color: '#fff',
+            border: 'none',
+            padding: '0.3rem 0.8rem',
+            borderRadius: '0.5rem',
+            cursor: 'pointer',
+            fontWeight: 'bold',
+          }}
+        >
+          {showShiny ? '✨ Show Normal' : '⭐ Show Shiny'}
+        </button>
+      </div>
 
       <AnimatedSprite
         sprites={pokemon.sprites}
         alt={pokemon.name}
         size={128}
         float
+        shiny={showShiny}
       />
 
       <p>
