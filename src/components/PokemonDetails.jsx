@@ -1,17 +1,20 @@
 import { useParams, useNavigate } from 'react-router-dom';
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useRef } from 'react';
 import AnimatedSprite from './AnimatedSprites';
 import EvolutionChain from './EvolutionChain';
 import { motion } from 'framer-motion';
 import axios from 'axios';
 import typeColors from '../utils/typeColors';
 import typeEmojis from '../utils/typeEmojis';
+import { useRouteTransition } from './TransitionManager';
 
 function PokemonDetails() {
+  const { triggerTransition } = useRouteTransition();
   const { id } = useParams();
   const navigate = useNavigate();
   const [pokemon, setPokemon] = useState(null);
   const [species, setSpecies] = useState(null);
+  const alreadyTriggered = useRef(false);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -31,6 +34,18 @@ function PokemonDetails() {
     fetchData();
   }, [id]);
 
+  useEffect(() => {
+    if (pokemon && !alreadyTriggered.current) {
+      alreadyTriggered.current = true; // 🔐 Ne le refera plus jamais
+      const primaryType = pokemon.types[0]?.type.name;
+      const color = typeColors[primaryType] || '#888';
+
+      requestAnimationFrame(() => {
+        triggerTransition(color, null, 'in');
+      });
+    }
+  }, [pokemon, triggerTransition]);
+
   if (!pokemon || !species) return <div className="pokeball-spinner"></div>;
 
   const description = species.flavor_text_entries
@@ -41,7 +56,6 @@ function PokemonDetails() {
   const color = typeColors[primaryType] || '#888';
   const animatedSprites =
     pokemon.sprites.versions?.['generation-v']?.['black-white']?.animated;
-
   return (
     <motion.div
       className="pokemon-details"

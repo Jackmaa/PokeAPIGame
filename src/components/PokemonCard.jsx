@@ -5,24 +5,24 @@ import AnimatedSprite from './AnimatedSprites';
 import useFavorites from '../hooks/useFavorites';
 import typeColors from '../utils/typeColors';
 import typeEmojis from '../utils/typeEmojis';
+import { useRouteTransition } from './TransitionManager';
 
 function PokemonCard({ data, onSelectType }) {
   const navigate = useNavigate();
-  const { favorites, isFavorite, toggleFavorite } = useFavorites();
-  const isFav = useMemo(
-    () => isFavorite(data.id),
-    [favorites, data.id, isFavorite]
-  );
+  const { isFavorite, toggleFavorite } = useFavorites();
+  const isFav = useMemo(() => isFavorite(data.id), [data.id, isFavorite]);
+  const { triggerTransition } = useRouteTransition();
   const bgColor = typeColors[data.types[0]?.type.name] || '#777';
-
-  const handleCardClick = () => {
-    navigate(`/pokemon/${data.id}`);
+  const handleClick = () => {
+    triggerTransition(bgColor, () => {
+      navigate(`/pokemon/${data.id}`);
+    });
   };
 
   return (
     <motion.div
       className="pokemon-card"
-      onClick={handleCardClick}
+      onClick={handleClick}
       initial={{ opacity: 0, y: 10 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.2, ease: 'easeOut' }}
