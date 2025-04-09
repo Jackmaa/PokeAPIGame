@@ -32,6 +32,7 @@ function PokemonCard({ data, onSelectType }) {
         borderRadius: '1rem',
         padding: '1rem',
         minWidth: '220px',
+        maxHeight: '350px',
         display: 'flex',
         flexDirection: 'column',
         alignItems: 'center',
