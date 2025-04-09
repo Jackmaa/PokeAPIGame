@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import usePokemonNames from '../hooks/usePokemonNames';
 import useDebouncedValue from '../hooks/useDebouncedValue';
 // eslint-disable-next-line no-unused-vars
@@ -10,6 +11,7 @@ function SearchBar({ onSearch, onError }) {
   const nameList = usePokemonNames(input.length >= 1);
   const [showSuggestions, setShowSuggestions] = useState(false);
   const [selectedIndex, setSelectedIndex] = useState(-1);
+  const navigate = useNavigate(); // Add navigate here
 
   useEffect(() => {
     setShowSuggestions(debouncedInput.length > 0);
@@ -18,6 +20,11 @@ function SearchBar({ onSearch, onError }) {
   const suggestions = nameList
     .filter(name => name.startsWith(debouncedInput.toLowerCase()))
     .slice(0, 5);
+
+  const handleSearch = name => {
+    // Navigate to the selected Pokémon detail page
+    navigate(`/pokemon/${name.toLowerCase()}`);
+  };
 
   const handleSubmit = e => {
     e.preventDefault();
@@ -30,9 +37,9 @@ function SearchBar({ onSearch, onError }) {
       );
       return;
     }
+
     if (isValid) {
-      onSearch(trimmed.toLowerCase());
-      setShowSuggestions(false);
+      handleSearch(trimmed);
     }
   };
 
@@ -84,7 +91,7 @@ function SearchBar({ onSearch, onError }) {
               e.preventDefault();
               const selected = suggestions[selectedIndex];
               setInput(selected);
-              onSearch(selected);
+              handleSearch(selected);
               setShowSuggestions(false);
               setSelectedIndex(-1);
             }
@@ -127,7 +134,7 @@ function SearchBar({ onSearch, onError }) {
                     onMouseEnter={() => setSelectedIndex(index)}
                     onMouseDown={() => {
                       setInput(name);
-                      onSearch(name);
+                      handleSearch(name);
                       setShowSuggestions(false);
                       setSelectedIndex(-1);
                     }}
