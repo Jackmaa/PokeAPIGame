@@ -6,6 +6,7 @@ import useFavorites from '../hooks/useFavorites';
 import typeColors from '../utils/typeColors';
 import typeEmojis from '../utils/typeEmojis';
 import { useRouteTransition } from './TransitionManager';
+import FavButton from './ui/FavButton';
 
 function PokemonCard({ data, onSelectType }) {
   const navigate = useNavigate();
@@ -44,18 +45,7 @@ function PokemonCard({ data, onSelectType }) {
         boxShadow: `0 0 16px ${bgColor}, 0 0 24px ${bgColor}aa`,
       }}
     >
-      {/* ⭐ FAVORI */}
-      <button
-        onClick={e => {
-          e.preventDefault();
-          e.stopPropagation();
-          toggleFavorite(data);
-        }}
-        className="fav-button"
-        aria-label="Favorite toggle"
-      >
-        {isFav ? '⭐' : '☆'}
-      </button>
+      <FavButton isFav={isFav} onToggle={() => toggleFavorite(data)} />
 
       <h2
         style={{
