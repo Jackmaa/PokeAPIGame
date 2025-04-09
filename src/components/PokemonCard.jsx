@@ -31,6 +31,10 @@ function PokemonCard({ data, onSelectType }) {
         border: `2px solid ${bgColor}`,
         borderRadius: '1rem',
       }}
+      whileHover={{
+        scale: 1.03,
+        boxShadow: `0 0 16px ${bgColor}, 0 0 24px ${bgColor}aa`,
+      }}
     >
       {/* ⭐ FAVORI */}
       <button
