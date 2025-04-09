@@ -30,6 +30,13 @@ function PokemonCard({ data, onSelectType }) {
         background: `${bgColor}20`,
         border: `2px solid ${bgColor}`,
         borderRadius: '1rem',
+        padding: '1rem',
+        minWidth: '220px',
+        display: 'flex',
+        flexDirection: 'column',
+        alignItems: 'center',
+        boxShadow: `0 4px 10px ${bgColor}55`,
+        transition: 'transform 0.2s ease',
       }}
       whileHover={{
         scale: 1.03,
@@ -49,11 +56,25 @@ function PokemonCard({ data, onSelectType }) {
         {isFav ? '⭐' : '☆'}
       </button>
 
-      <h2 style={{ color: bgColor }}>
+      <h2
+        style={{
+          color: bgColor,
+          fontSize: '1.5rem',
+          marginBottom: '0.5rem',
+          textAlign: 'center',
+          textShadow: '0 0 1px #fff',
+        }}
+      >
         {data.name.charAt(0).toUpperCase() + data.name.slice(1)}
       </h2>
 
-      <AnimatedSprite sprites={data.sprites} alt={data.name} size={96} float />
+      <AnimatedSprite
+        sprites={data.sprites}
+        alt={data.name}
+        size={96}
+        float
+        style={{ margin: '0.5rem 0' }}
+      />
 
       {/* 🔘 TYPES */}
       <div
@@ -78,14 +99,13 @@ function PokemonCard({ data, onSelectType }) {
               color: typeColors[t.type.name],
               border: `1px solid ${typeColors[t.type.name]}`,
               borderRadius: '0.5rem',
-              padding: '0.2rem 0.5rem',
+              padding: '0.2rem 0.6rem',
               fontSize: '0.75rem',
               fontWeight: 'bold',
               display: 'flex',
               alignItems: 'center',
               gap: '4px',
               cursor: 'pointer',
-              zIndex: 10,
             }}
           >
             {typeEmojis[t.type.name] || '🔹'} {t.type.name.toUpperCase()}
@@ -94,18 +114,29 @@ function PokemonCard({ data, onSelectType }) {
       </div>
 
       {/* 📏 Infos */}
-      <p>
-        <strong>Height:</strong> {data.height}
-      </p>
-      <p>
-        <strong>Weight:</strong> {data.weight}
-      </p>
+      <div
+        style={{
+          display: 'flex',
+          justifyContent: 'space-around',
+          width: '100%',
+          marginTop: '0.5rem',
+        }}
+      >
+        <p>
+          <strong>Height:</strong> {data.height}
+        </p>
+        <p>
+          <strong>Weight:</strong> {data.weight}
+        </p>
+      </div>
 
-      <div>
+      <div style={{ width: '100%', marginTop: '0.5rem' }}>
         <strong>Abilities:</strong>
-        <ul>
+        <ul style={{ margin: 0, paddingLeft: '1rem' }}>
           {data.abilities.map((a, i) => (
-            <li key={i}>{a.ability.name}</li>
+            <li style={{ listStyleType: 'none' }} key={i}>
+              {a.ability.name}
+            </li>
           ))}
         </ul>
       </div>
