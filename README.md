@@ -31,9 +31,11 @@ A complete Pokémon experience featuring a **Pokédex** and a **Minigame**.
 ```
 📁 pokedex
 ├── src/
-│   ├── components/
-│   ├── assets/
+│   ├── components/     # UI + Logic components
+    │    └── ui/        # Reusable atomic UI (Button, StatBar, Loader, etc.)
+│   ├── hooks/
 │   ├── pages/
+    ├── utils/              # Helpers (typeColors, getSafeBaseName, etc.)
 │   ├── App.jsx
 │   ├── index.css
 │   └── main.jsx
@@ -64,11 +66,14 @@ npm run dev
 
 ### 📊 Pokédex:
 
-✔️ Search for Pokémon by name or ID  
-✔️ View detailed stats, abilities, and evolutions  
-✔️ Filter by type  
-✔️ Compare Pokémon side by side  
-✔️ Mark favorites (stored in localStorage)
+✔️Search + Autocomplete (with keyboard nav)
+✔️Filter by Type
+✔️Favorites with localStorage
+✔️View Pokémon details, stats, abilities
+✔️View alternate forms (with sprite & description)
+✔️Shiny toggle with animated sprite swap
+✔️Fallback-safe API handling (for -mega, -cap, etc.)
+✔️Evolution chain with clickable steps
 
 ### ⚔️ Battle Game:
 
@@ -80,7 +85,7 @@ npm run dev
 ✔️ Game loop with increasing difficulty  
 ✔️ Sound effects & attack animations
 
-⚡ _Catch 'em all!_
+⚡ _Gotta catch ’em all – but with style_
 
 ## 📖 Resources & References
 
