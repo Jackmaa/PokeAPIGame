@@ -8,7 +8,7 @@ import typeEmojis from '../utils/typeEmojis';
 import { useRouteTransition } from './TransitionManager';
 import FavButton from './ui/FavButton';
 
-function PokemonCard({ data, onSelectType }) {
+function PokemonCard({ data, onSelectType, isSelected, onToggleCompare }) {
   const navigate = useNavigate();
   const { isFavorite, toggleFavorite } = useFavorites();
   const isFav = useMemo(() => isFavorite(data.id), [data.id, isFavorite]);
@@ -46,7 +46,15 @@ function PokemonCard({ data, onSelectType }) {
       }}
     >
       <FavButton isFav={isFav} onToggle={() => toggleFavorite(data)} />
-
+      <input
+        type="checkbox"
+        checked={isSelected}
+        onClick={e => {
+          e.stopPropagation();
+          onToggleCompare();
+        }}
+        className="compare-checkbox"
+      />
       <h2
         style={{
           color: bgColor,
