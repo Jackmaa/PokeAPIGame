@@ -263,3 +263,34 @@ body.is-transitioning {
     visibility: hidden;
   }
 }
+
+/* MiniPokemonCard.css */
+.mini-pokemon-card {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.3rem 0.6rem;
+  border: 2px solid transparent;
+  border-radius: 0.8rem;
+  background-color: #1e1e1e;
+  color: #fff;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.mini-pokemon-card:hover {
+  background-color: #2a2a2a;
+  transform: scale(1.03);
+  box-shadow: 0 0 6px rgba(255, 255, 255, 0.2);
+}
+
+.mini-pokemon-img {
+  width: 40px;
+  height: 40px;
+}
+
+.mini-pokemon-name {
+  font-weight: 600;
+  text-transform: capitalize;
+  font-size: 0.9rem;
+}

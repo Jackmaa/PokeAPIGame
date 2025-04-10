@@ -29,16 +29,31 @@ function SearchBar({ onSearch, onError }) {
     .filter(name => name.startsWith(debouncedInput.toLowerCase()))
     .slice(0, 5);
 
-  const handleSearch = name => {
-    // Update sessionStorage with recent searches
-    const newRecentSearches = [
-      name,
-      ...recentSearches.filter(search => search !== name),
-    ].slice(0, 5);
-    sessionStorage.setItem('recentSearches', JSON.stringify(newRecentSearches));
-    setRecentSearches(newRecentSearches);
-    // Navigate to the selected Pokémon detail page
-    navigate(`/pokemon/${name.toLowerCase()}`);
+  const handleSearch = async name => {
+    try {
+      const res = await fetch(
+        `https://pokeapi.co/api/v2/pokemon/${name.toLowerCase()}`
+      );
+      const data = await res.json();
+
+      const formatted = {
+        id: data.id,
+        name: data.name,
+        sprite: data.sprites.front_default,
+        types: data.types.map(t => t.type.name),
+      };
+
+      const newRecent = [
+        formatted,
+        ...recentSearches.filter(p => p.name !== name),
+      ].slice(0, 5);
+      sessionStorage.setItem('recentSearches', JSON.stringify(newRecent));
+      setRecentSearches(newRecent);
+
+      navigate(`/pokemon/${formatted.name}`);
+    } catch (err) {
+      onError(`Could not find Pokémon: "${name}"`);
+    }
   };
   const handleSubmit = e => {
     e.preventDefault();
