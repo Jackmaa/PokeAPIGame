@@ -7,7 +7,7 @@ import typeColors from '../utils/typeColors';
 import typeEmojis from '../utils/typeEmojis';
 import { useState } from 'react';
 import Button from './ui/Button';
-import StatBar from './ui/StatBar';
+import StatRadar from './ui/StatRadar';
 import FormSelector from './FormSelector';
 
 function PokemonDetails() {
@@ -111,14 +111,7 @@ function PokemonDetails() {
       {pokemon.stats?.length > 0 && (
         <>
           <h3>Stats:</h3>
-          {pokemon.stats.map(stat => (
-            <StatBar
-              key={stat.stat.name}
-              name={stat.stat.name}
-              value={stat.base_stat}
-              color={color}
-            />
-          ))}
+          <StatRadar stats={pokemon.stats} type={pokemon.types[0].type.name} />
         </>
       )}
 

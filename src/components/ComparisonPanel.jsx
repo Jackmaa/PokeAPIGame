@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import typeColors from '../utils/typeColors';
 import typeEmojis from '../utils/typeEmojis';
 import { useComparison } from '../context/ComparisonContext';
+import StatRadar from './ui/StatRadar';
 
 function ComparisonPanel({ pokemons }) {
   const { clearCompare } = useComparison();
@@ -56,13 +57,7 @@ function ComparisonPanel({ pokemons }) {
                 );
               })}
             </div>
-            <ul className="comp-stats">
-              {p.stats?.map(stat => (
-                <li key={stat.stat.name}>
-                  {stat.stat.name}: <strong>{stat.base_stat}</strong>
-                </li>
-              ))}
-            </ul>
+            <StatRadar stats={p.stats} type={p.types[0].type.name} />
           </div>
         ))}
       </div>
