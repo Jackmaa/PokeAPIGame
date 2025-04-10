@@ -127,7 +127,18 @@ function SearchBar({ onError }) {
 
   const SuggestionList = () => {
     if (suggestions.length === 0) {
-      return <li className="no-match">No matches found</li>;
+      return (
+        <motion.li
+          key="no-results"
+          className="no-match"
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          exit={{ opacity: 0 }}
+          style={{ padding: '0.5rem', textAlign: 'center', color: '#888' }}
+        >
+          No Pokémon found 😢
+        </motion.li>
+      );
     }
 
     return suggestions.map((name, index) => (

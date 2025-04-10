@@ -2,25 +2,26 @@ import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import MiniPokemonCard from './MiniPokemonCard';
 
-function RecentList({ recentSearches, onSearch }) {
+function RecentList({ recentSearches }) {
   const navigate = useNavigate();
+
+  if (!recentSearches?.length) return null;
+
   return (
-    <div>
-      {recentSearches.length > 0 && (
-        <div className="recent-searches">
-          <h4>Recently Viewed</h4>
-          <div className="mini-list">
-            {recentSearches.map(poke => (
-              <MiniPokemonCard
-                key={poke.id}
-                pokemon={poke}
-                onClick={() => navigate(`/pokemon/${poke.name}`)}
-              />
-            ))}
-          </div>
+    <details>
+      <summary>🕘 Recently Viewed</summary>
+      <div className="recent-searches">
+        <div className="mini-list">
+          {recentSearches.map(poke => (
+            <MiniPokemonCard
+              key={poke.id}
+              pokemon={poke}
+              onClick={() => navigate(`/pokemon/${poke.name}`)}
+            />
+          ))}
         </div>
-      )}
-    </div>
+      </div>
+    </details>
   );
 }
 
