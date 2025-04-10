@@ -102,19 +102,13 @@ body {
   overflow-y: auto;
 }
 
-.autocomplete-dropdown li {
-  padding: 0.5rem 1rem;
-  cursor: pointer;
-  font-size: 0.95rem;
-}
-
-.autocomplete-dropdown li:hover {
-  background: #f1f1f1;
-}
-
 .autocomplete-dropdown li.selected {
-  background-color: #f1f1f1;
-  font-weight: bold;
+  background-color: rgba(255, 255, 255, 0.08);
+  border-left: 3px solid #ffcb05; /* Pikachu yellow vibe */
+}
+
+.mini-pokemon-card {
+  pointer-events: none;
 }
 
 .pokedex-grid {
@@ -270,8 +264,6 @@ body.is-transitioning {
   align-items: center;
   gap: 0.5rem;
   padding: 0.3rem 0.6rem;
-  border: 2px solid transparent;
-  border-radius: 0.8rem;
   background-color: #1e1e1e;
   color: #fff;
   cursor: pointer;
@@ -280,7 +272,6 @@ body.is-transitioning {
 
 .mini-pokemon-card:hover {
   background-color: #2a2a2a;
-  transform: scale(1.03);
   box-shadow: 0 0 6px rgba(255, 255, 255, 0.2);
 }
 

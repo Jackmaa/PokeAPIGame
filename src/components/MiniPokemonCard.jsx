@@ -1,10 +1,13 @@
 import React from 'react';
 
-function MiniPokemonCard({ pokemon, onClick }) {
+function MiniPokemonCard({ pokemon, onClick, disableInteraction = false }) {
   return (
     <div
       className="mini-pokemon-card"
-      onClick={() => onClick(pokemon.id)}
+      onClick={() => !disableInteraction && onClick?.(pokemon.id)}
+      style={{
+        pointerEvents: disableInteraction ? 'none' : 'auto',
+      }}
       title={`View ${pokemon.name}`}
     >
       <img

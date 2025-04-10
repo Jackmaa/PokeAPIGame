@@ -1,35 +1,34 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useMemo } from 'react';
 import { useNavigate } from 'react-router-dom';
 import usePokemonNames from '../hooks/usePokemonNames';
 import useDebouncedValue from '../hooks/useDebouncedValue';
-// eslint-disable-next-line no-unused-vars
 import { AnimatePresence, motion } from 'framer-motion';
+import MiniPokemonCard from './MiniPokemonCard';
 
-function SearchBar({ onSearch, onError }) {
+function SearchBar({ onError }) {
   const [input, setInput] = useState('');
+  const [selectedIndex, setSelectedIndex] = useState(-1);
+  const [recentSearches, setRecentSearches] = useState(() => {
+    const stored = sessionStorage.getItem('recentSearches');
+    return stored ? JSON.parse(stored) : [];
+  });
+
   const debouncedInput = useDebouncedValue(input, 200);
   const nameList = usePokemonNames(input.length >= 1);
-  const [showSuggestions, setShowSuggestions] = useState(false);
-  const [selectedIndex, setSelectedIndex] = useState(-1);
-  const navigate = useNavigate(); // Add navigate here
+  const suggestions = useMemo(
+    () =>
+      nameList
+        .filter(name => name.startsWith(debouncedInput.toLowerCase()))
+        .slice(0, 5),
+    [debouncedInput, nameList]
+  );
 
-  // Retrieve recent searches from sessionStorage
-  const getRecentSearches = () => {
-    const recent = sessionStorage.getItem('recentSearches');
-    return recent ? JSON.parse(recent) : [];
-  };
+  const showSuggestions = debouncedInput.length > 0;
+  const navigate = useNavigate();
 
-  const [recentSearches, setRecentSearches] = useState(getRecentSearches);
+  const isValidInput = str => /^[a-zA-Z0-9]+$/.test(str);
 
-  useEffect(() => {
-    setShowSuggestions(debouncedInput.length > 0);
-  }, [debouncedInput]);
-
-  const suggestions = nameList
-    .filter(name => name.startsWith(debouncedInput.toLowerCase()))
-    .slice(0, 5);
-
-  const handleSearch = async name => {
+  const handleSearchSelection = async name => {
     try {
       const res = await fetch(
         `https://pokeapi.co/api/v2/pokemon/${name.toLowerCase()}`
@@ -45,31 +44,115 @@ function SearchBar({ onSearch, onError }) {
 
       const newRecent = [
         formatted,
-        ...recentSearches.filter(p => p.name !== name),
+        ...recentSearches.filter(p => p.name !== formatted.name),
       ].slice(0, 5);
       sessionStorage.setItem('recentSearches', JSON.stringify(newRecent));
       setRecentSearches(newRecent);
 
       navigate(`/pokemon/${formatted.name}`);
-    } catch (err) {
+    } catch {
       onError(`Could not find Pokémon: "${name}"`);
     }
   };
+
+  const handleKeyDown = e => {
+    if (e.key === 'ArrowDown') {
+      e.preventDefault();
+      setSelectedIndex(prev => (prev < suggestions.length - 1 ? prev + 1 : 0));
+    } else if (e.key === 'ArrowUp') {
+      e.preventDefault();
+      setSelectedIndex(prev => (prev > 0 ? prev - 1 : suggestions.length - 1));
+    } else if (e.key === 'Enter' && selectedIndex >= 0) {
+      e.preventDefault();
+      handleSearchSelection(suggestions[selectedIndex]);
+      setInput(suggestions[selectedIndex]);
+      setSelectedIndex(-1);
+    } else if (e.key === 'Escape') {
+      setInput('');
+      setSelectedIndex(-1);
+    }
+  };
+
   const handleSubmit = e => {
     e.preventDefault();
     const trimmed = input.trim();
-    const isValid = /^[a-zA-Z0-9]+$/.test(trimmed);
-
-    if (trimmed === '' || !isValid) {
+    if (!trimmed || !isValidInput(trimmed)) {
       onError(
         'Please enter a valid Pokémon name or ID (letters and numbers only).'
       );
       return;
     }
+    handleSearchSelection(trimmed);
+  };
 
-    if (isValid) {
-      handleSearch(trimmed);
+  const [pokemonCache, setPokemonCache] = useState({});
+  useEffect(() => {
+    const fetchSuggestionsData = async () => {
+      const newCache = { ...pokemonCache };
+      const missing = suggestions.filter(name => !newCache[name]);
+
+      const fetches = await Promise.all(
+        missing.map(async name => {
+          try {
+            const res = await fetch(
+              `https://pokeapi.co/api/v2/pokemon/${name}`
+            );
+            const data = await res.json();
+            return {
+              name,
+              data: {
+                id: data.id,
+                name: data.name,
+                sprite: data.sprites.front_default,
+                types: data.types.map(t => t.type.name),
+              },
+            };
+          } catch {
+            return null;
+          }
+        })
+      );
+
+      fetches.forEach(entry => {
+        if (entry) newCache[entry.name] = entry.data;
+      });
+
+      setPokemonCache(newCache);
+    };
+
+    if (suggestions.length > 0) {
+      fetchSuggestionsData();
     }
+  }, [suggestions]);
+
+  const SuggestionList = () => {
+    if (suggestions.length === 0) {
+      return <li className="no-match">No matches found</li>;
+    }
+
+    return suggestions.map((name, index) => (
+      <li
+        key={name}
+        className={index === selectedIndex ? 'selected' : ''}
+        onMouseEnter={() => setSelectedIndex(index)}
+        onClick={() => {
+          setInput(name);
+          handleSearchSelection(name);
+          setSelectedIndex(-1);
+        }}
+        aria-selected={index === selectedIndex}
+      >
+        {pokemonCache[name] ? (
+          <MiniPokemonCard
+            pokemon={pokemonCache[name]}
+            onClick={() => {}}
+            disableInteraction={true}
+          />
+        ) : (
+          name
+        )}
+      </li>
+    ));
   };
 
   return (
@@ -87,10 +170,8 @@ function SearchBar({ onSearch, onError }) {
     >
       <div
         className="input-wrapper"
-        onBlur={() => setShowSuggestions(false)}
-        onFocus={() => {
-          if (input.length > 0) setShowSuggestions(true);
-        }}
+        onBlur={() => setSelectedIndex(-1)}
+        onFocus={() => input.length > 0 && setSelectedIndex(-1)}
         tabIndex={-1}
       >
         <input
@@ -99,46 +180,18 @@ function SearchBar({ onSearch, onError }) {
           value={input}
           onChange={e => {
             setInput(e.target.value);
-            setShowSuggestions(true);
+            setSelectedIndex(-1);
           }}
-          onKeyDown={e => {
-            if (e.key === 'ArrowDown') {
-              e.preventDefault();
-              setSelectedIndex(prev =>
-                prev < suggestions.length - 1 ? prev + 1 : 0
-              );
-            }
-
-            if (e.key === 'ArrowUp') {
-              e.preventDefault();
-              setSelectedIndex(prev =>
-                prev > 0 ? prev - 1 : suggestions.length - 1
-              );
-            }
-
-            if (e.key === 'Enter' && selectedIndex >= 0) {
-              e.preventDefault();
-              const selected = suggestions[selectedIndex];
-              setInput(selected);
-              handleSearch(selected);
-              setShowSuggestions(false);
-              setSelectedIndex(-1);
-            }
-
-            if (e.key === 'Escape') {
-              setInput('');
-              setShowSuggestions(false);
-              setSelectedIndex(-1);
-            }
-          }}
+          onKeyDown={handleKeyDown}
         />
+
         {input && (
           <button
             type="button"
             className="clear-button"
             onClick={() => {
               setInput('');
-              setShowSuggestions(false);
+              setSelectedIndex(-1);
             }}
             aria-label="Clear input"
           >
@@ -155,25 +208,7 @@ function SearchBar({ onSearch, onError }) {
               exit={{ opacity: 0, y: -5 }}
               transition={{ duration: 0.2 }}
             >
-              {suggestions.length > 0 ? (
-                suggestions.map((name, index) => (
-                  <li
-                    key={name}
-                    className={index === selectedIndex ? 'selected' : ''}
-                    onMouseEnter={() => setSelectedIndex(index)}
-                    onMouseDown={() => {
-                      setInput(name);
-                      handleSearch(name);
-                      setShowSuggestions(false);
-                      setSelectedIndex(-1);
-                    }}
-                  >
-                    {name}
-                  </li>
-                ))
-              ) : (
-                <li className="no-match">No matches found</li>
-              )}
+              <SuggestionList />
             </motion.ul>
           )}
         </AnimatePresence>
