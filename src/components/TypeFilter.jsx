@@ -32,13 +32,6 @@ function TypeFilter({ onSelectType, selectedType }) {
       backgroundColor: bg,
       color: text,
       outline: `2px solid ${color}`,
-      outlineRadius: '1rem',
-      padding: '0.4rem 0.2rem',
-      fontWeight: 'bold',
-      cursor: 'pointer',
-      transition: 'all 0.2s ease',
-      display: 'flex',
-      alignItems: 'center',
     };
   };
 

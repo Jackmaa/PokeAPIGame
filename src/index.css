@@ -121,8 +121,7 @@ body {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
   gap: 2rem;
-  margin-top: 2rem;
-  padding: 1rem;
+  padding-inline: 1rem;
 }
 .pokemon-card {
   position: relative;
@@ -152,24 +151,16 @@ body {
 }
 
 .type-filter button {
-  border: none;
-  padding: 0.5rem 1rem;
-  background-color: #eee;
+  display: flex;
   border: none;
   border-radius: 0.5rem;
+  padding: 0.4rem 0.2rem;
   cursor: pointer;
-  transition: background-color 0.3s ease;
+  font-weight: bold;
 }
 
 .type-filter button:hover {
   background-color: #d4d4d4;
-}
-
-.type-filter button.selected {
-  background-color: #ffcc00;
-  color: #222;
-  box-shadow: 0 0 8px rgba(255, 204, 0, 0.8);
-  transform: scale(1.05);
 }
 
 .pokeball-spinner {
