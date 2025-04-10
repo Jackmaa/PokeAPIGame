@@ -23,10 +23,11 @@ function TypeFilter({ onSelectType, selectedType }) {
   }, []);
 
   const renderButton = (typeName, isSelected) => {
-    const color = typeColors[typeName] || '#888';
+    const color = typeColors[typeName] || '#d4d4d4';
     const bg = isSelected ? color : `${color}22`;
 
-    const text = typeName === 'all' ? '#FFF' : isSelected ? '#fff' : color;
+    const text =
+      typeName === 'all' && isSelected ? '#000' : isSelected ? '#FFF' : color;
 
     return {
       backgroundColor: bg,

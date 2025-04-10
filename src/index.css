@@ -160,7 +160,7 @@ body {
 }
 
 .type-filter button:hover {
-  background-color: #d4d4d4;
+  scale: 1.05;
 }
 
 .pokeball-spinner {
