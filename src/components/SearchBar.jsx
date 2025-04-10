@@ -13,6 +13,14 @@ function SearchBar({ onSearch, onError }) {
   const [selectedIndex, setSelectedIndex] = useState(-1);
   const navigate = useNavigate(); // Add navigate here
 
+  // Retrieve recent searches from sessionStorage
+  const getRecentSearches = () => {
+    const recent = sessionStorage.getItem('recentSearches');
+    return recent ? JSON.parse(recent) : [];
+  };
+
+  const [recentSearches, setRecentSearches] = useState(getRecentSearches);
+
   useEffect(() => {
     setShowSuggestions(debouncedInput.length > 0);
   }, [debouncedInput]);
@@ -22,10 +30,16 @@ function SearchBar({ onSearch, onError }) {
     .slice(0, 5);
 
   const handleSearch = name => {
+    // Update sessionStorage with recent searches
+    const newRecentSearches = [
+      name,
+      ...recentSearches.filter(search => search !== name),
+    ].slice(0, 5);
+    sessionStorage.setItem('recentSearches', JSON.stringify(newRecentSearches));
+    setRecentSearches(newRecentSearches);
     // Navigate to the selected Pokémon detail page
     navigate(`/pokemon/${name.toLowerCase()}`);
   };
-
   const handleSubmit = e => {
     e.preventDefault();
     const trimmed = input.trim();

@@ -31,21 +31,26 @@ function TypeFilter({ onSelectType, selectedType }) {
     return {
       backgroundColor: bg,
       color: text,
-      border: `2px solid ${color}`,
-      borderRadius: '1rem',
-      padding: '0.4rem 0.8rem',
-      margin: '0.3rem',
+      outline: `2px solid ${color}`,
+      outlineRadius: '1rem',
+      padding: '0.4rem 0.2rem',
       fontWeight: 'bold',
       cursor: 'pointer',
       transition: 'all 0.2s ease',
       display: 'flex',
       alignItems: 'center',
-      gap: '6px',
     };
   };
 
   return (
-    <div className="type-filter" style={{ display: 'flex', flexWrap: 'wrap' }}>
+    <div
+      className="type-filter"
+      style={{
+        display: 'grid',
+        gridTemplateColumns: 'repeat(4, minmax(100px, 1fr))',
+        gap: '0.7rem',
+      }}
+    >
       <button
         onClick={() => onSelectType(null)}
         style={renderButton('all', selectedType === null)}
