@@ -8,6 +8,8 @@ A complete Pokémon experience featuring a **Pokédex** and a **Minigame**.
 ![React](https://img.shields.io/badge/React-61DAFB?style=for-the-badge&logo=react&logoColor=black)
 ![PokéAPI](https://img.shields.io/badge/PokéAPI-FFCB05?style=for-the-badge&logo=pokemon&logoColor=black)
 ![Axios](https://img.shields.io/badge/Axios-5A29E4?style=for-the-badge&logo=axios&logoColor=white)
+![Recharts](https://img.shields.io/badge/Recharts-FF7300?style=for-the-badge&logo=recharts&logoColor=white)
+![Framer Motion](https://img.shields.io/badge/Framer--Motion-EF008F?style=for-the-badge&logo=framer&logoColor=white)
 
 ## 🚀 Features
 
@@ -30,21 +32,52 @@ A complete Pokémon experience featuring a **Pokédex** and a **Minigame**.
 
 ```
 📁 pokedex
-├── src/
-│   ├── components/     # UI + Logic components
-│   │    └── ui/        # Reusable atomic UI (Button, StatBar, Loader, etc.)
-│   ├── hooks/
-│   ├── pages/
-│   ├── utils/              # Helpers (typeColors, getSafeBaseName, etc.)
-│   ├── App.jsx
-│   ├── index.css
-│   └── main.jsx
-├── index.html
-├── eslint.config.js
-├── package.json
-├── package.lock.json
+├── .gitignore
+├── .prettierrc
 ├── README.md
-├── vite.config.js
+├── eslint.config.js
+├── index.html
+├── package-lock.json
+├── package.json
+├── pokedexapi_refacto_checklist.txt
+├── src
+│   ├── App.jsx
+│   ├── api
+│   │   └── pokeapi.js
+│   ├── components
+│   │   ├── AnimatedSprites.jsx
+│   │   ├── ComparisonPanel.jsx
+│   │   ├── EvolutionChain.jsx
+│   │   ├── FormSelector.jsx
+│   │   ├── MiniPokemonCard.jsx
+│   │   ├── PokedexGrid.jsx
+│   │   ├── PokemonCard.jsx
+│   │   ├── PokemonDetails.jsx
+│   │   ├── RecentList.jsx
+│   │   ├── RouteTransition.jsx
+│   │   ├── SearchBar.jsx
+│   │   ├── SidebarPanel.jsx
+│   │   ├── TransitionManager.jsx
+│   │   ├── TypeFilter.jsx
+│   │   └── ui
+│   │   │   ├── Button.jsx
+│   │   │   ├── FavButton.jsx
+│   │   │   └── StatRadar.jsx
+│   ├── context
+│   │   └── ComparisonContext.jsx
+│   ├── hooks
+│   │   ├── useDebouncedValue.js
+│   │   ├── useFavorites.js
+│   │   ├── usePokemonDetails.js
+│   │   └── usePokemonNames.js
+│   ├── index.css
+│   ├── main.jsx
+│   ├── pages
+│   │   └── Home.jsx
+│   └── utils
+│   │   ├── typeColors.js
+│   │   └── typeEmojis.js
+└── vite.config.js
 ```
 
 ---
