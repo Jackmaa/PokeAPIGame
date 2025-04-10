@@ -5,7 +5,7 @@ import MiniPokemonCard from './MiniPokemonCard';
 function RecentList({ recentSearches, onSearch }) {
   const navigate = useNavigate();
   return (
-    <div style={{ marginTop: '1rem' }}>
+    <div>
       {recentSearches.length > 0 && (
         <div className="recent-searches">
           <h4>Recently Viewed</h4>
