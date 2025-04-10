@@ -7,6 +7,7 @@ import typeColors from '../utils/typeColors';
 import typeEmojis from '../utils/typeEmojis';
 import { useRouteTransition } from './TransitionManager';
 import FavButton from './ui/FavButton';
+import { useComparison } from '../context/ComparisonContext';
 
 function PokemonCard({ data, onSelectType, isSelected, onToggleCompare }) {
   const navigate = useNavigate();
@@ -19,6 +20,7 @@ function PokemonCard({ data, onSelectType, isSelected, onToggleCompare }) {
       navigate(`/pokemon/${data.name}`);
     });
   };
+  const { comparisonList, toggleCompare } = useComparison();
 
   return (
     <motion.div
@@ -48,12 +50,11 @@ function PokemonCard({ data, onSelectType, isSelected, onToggleCompare }) {
       <FavButton isFav={isFav} onToggle={() => toggleFavorite(data)} />
       <input
         type="checkbox"
-        checked={isSelected}
+        checked={comparisonList.some(p => p.name === data.name)}
         onClick={e => {
           e.stopPropagation();
-          onToggleCompare();
+          toggleCompare(data);
         }}
-        className="compare-checkbox"
       />
       <h2
         style={{

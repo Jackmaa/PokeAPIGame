@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import PokemonCard from './PokemonCard';
-import ComparisonPanel from '../components/ComparisonPanel';
+import { useComparison } from '../context/ComparisonContext';
 import axios from 'axios';
 
 function PokedexGrid({
@@ -11,10 +11,8 @@ function PokedexGrid({
   setLimit,
 }) {
   const [pokemonList, setPokemonList] = useState([]);
-
+  const { comparisonList, toggleCompare } = useComparison();
   const [loading, setLoading] = useState(true);
-
-  const [comparisonList, setComparisonList] = useState([]);
 
   useEffect(() => {
     const fetchPokemon = async () => {
@@ -113,23 +111,10 @@ function PokedexGrid({
         p.name.toLowerCase().includes(searchTerm.toLowerCase())
       );
 
-  const toggleCompare = pokemon => {
-    setComparisonList(prev => {
-      const exists = prev.some(p => p.name === pokemon.name);
-      return exists
-        ? prev.filter(p => p.name !== pokemon.name)
-        : [...prev, pokemon].slice(0, 4); // Optional: limit to 4
-    });
-  };
-
   if (loading) return <div className="pokeball-spinner"></div>;
 
   return (
     <>
-      <ComparisonPanel
-        pokemons={comparisonList}
-        onClear={() => setComparisonList([])}
-      />
       <div className="pokedex-grid">
         {filteredList.map(pokemon => (
           <PokemonCard
