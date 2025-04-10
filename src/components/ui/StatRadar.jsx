@@ -5,6 +5,7 @@ import {
   PolarAngleAxis,
   PolarRadiusAxis,
   ResponsiveContainer,
+  Tooltip,
 } from 'recharts';
 import PropTypes from 'prop-types';
 import typeColors from '../../utils/typeColors';
@@ -15,6 +16,28 @@ function StatRadar({ stats, type }) {
     stat: stat.stat.name.toUpperCase(),
     value: stat.base_stat,
   }));
+
+  const CustomTooltip = ({ active, payload }) => {
+    if (active && payload && payload.length > 0) {
+      const { stat, value } = payload[0].payload;
+      return (
+        <div
+          style={{
+            background: '#222',
+            color: '#fff',
+            padding: '0.5rem',
+            borderRadius: '0.5rem',
+            fontSize: '0.8rem',
+            boxShadow: '0 0 8px rgba(0,0,0,0.5)',
+          }}
+        >
+          <strong>{stat}</strong>: {value}
+        </div>
+      );
+    }
+
+    return null;
+  };
 
   return (
     <div
@@ -31,12 +54,13 @@ function StatRadar({ stats, type }) {
           <PolarAngleAxis dataKey="stat" style={{ fontSize: '0.7rem' }} />
           <PolarRadiusAxis angle={30} domain={[0, 160]} />
           <Radar
-            name="Stats"
+            name={data.stat}
             dataKey="value"
             stroke={color}
             fill={color}
             fillOpacity={0.6}
           />
+          <Tooltip content={<CustomTooltip />} />
         </RadarChart>
       </ResponsiveContainer>
     </div>
