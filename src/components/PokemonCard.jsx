@@ -53,8 +53,8 @@ function PokemonCard({ data, onSelectType, isSelected, onToggleCompare }) {
         checked={comparisonList.some(p => p.name === data.name)}
         onClick={e => {
           e.stopPropagation();
-          toggleCompare(data);
         }}
+        onChange={() => toggleCompare(data)}
       />
       <h2
         style={{
