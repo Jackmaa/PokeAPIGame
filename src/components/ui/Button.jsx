@@ -6,8 +6,8 @@ function Button({
   onClick,
   color = '#333',
   fullWidth = false,
-  variant = 'filled', // 'filled' | 'outline' | 'ghost'
-  size = 'md', // 'sm' | 'md' | 'lg'
+  variant = 'filled',
+  size = 'md',
   ...props
 }) {
   const sizes = {

@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import PokemonCard from './PokemonCard';
+import ScrollToTopButton from './ui/ScrollToTopButton';
 import { useComparison } from '../context/ComparisonContext';
 import axios from 'axios';
 
@@ -131,17 +132,16 @@ function PokedexGrid({
           <p className="no-results">No results found for "{searchTerm}" 😢</p>
         )}
 
-        <div style={{ textAlign: 'center', marginTop: '2rem' }}>
-          <button
-            className="load-more-button"
-            onClick={() => {
-              sessionStorage.setItem('pokedexScroll', window.scrollY);
-              setLimit(limit + 20);
-            }}
-          >
-            Load More
-          </button>
-        </div>
+        <button
+          className="load-more-button"
+          onClick={() => {
+            sessionStorage.setItem('pokedexScroll', window.scrollY);
+            setLimit(limit + 20);
+          }}
+        >
+          Load More
+        </button>
+        <ScrollToTopButton />
       </div>
     </>
   );
