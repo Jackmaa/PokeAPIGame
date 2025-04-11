@@ -5,13 +5,9 @@ import useDebouncedValue from '../hooks/useDebouncedValue';
 import { AnimatePresence, motion } from 'framer-motion';
 import MiniPokemonCard from './MiniPokemonCard';
 
-function SearchBar({ onError }) {
+function SearchBar({ onError, recentSearches, setRecentSearches }) {
   const [input, setInput] = useState('');
   const [selectedIndex, setSelectedIndex] = useState(-1);
-  const [recentSearches, setRecentSearches] = useState(() => {
-    const stored = sessionStorage.getItem('recentSearches');
-    return stored ? JSON.parse(stored) : [];
-  });
 
   const debouncedInput = useDebouncedValue(input, 200);
   const nameList = usePokemonNames(input.length >= 1);

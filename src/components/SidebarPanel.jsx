@@ -13,30 +13,41 @@ const getRecentSearches = () => {
 function SidebarPanel({ onSearch, onError, selectedType, onSelectType }) {
   const [recentSearches, setRecentSearches] = useState(getRecentSearches());
   const { comparisonList, clearCompare } = useComparison();
+
+  const handleClearRecent = () => {
+    sessionStorage.removeItem('recentSearches');
+    setRecentSearches([]);
+  };
+
   return (
     <aside className="sidebar-panel">
       <h1 className="sidebar-title">Pokédex 🔎</h1>
 
       {/* 🔍 SearchBar */}
-      <SearchBar onSearch={onSearch} onError={onError} />
+      <SearchBar
+        onSearch={onSearch}
+        onError={onError}
+        recentSearches={recentSearches}
+        setRecentSearches={setRecentSearches}
+      />
 
       {/* 🎛️ Type Filtering */}
       <TypeFilter selectedType={selectedType} onSelectType={onSelectType} />
 
       {/* 📚 Recent Pokémon */}
       {recentSearches.length > 0 && (
-        <RecentList recentSearches={recentSearches} onSearch={onSearch} />
+        <RecentList
+          recentSearches={recentSearches}
+          onSearch={onSearch}
+          onClear={handleClearRecent}
+          setRecentSearches={setRecentSearches}
+        />
       )}
 
-      {/* 🔮 Placeholder for future stuff */}
-      {/* <Favorites /> */}
-      {/* <CompareBar /> */}
+      {/* 🔍 Compare Panel */}
       <details open={comparisonList.length >= 2}>
         <summary>🔍 Compare ({comparisonList.length})</summary>
-        <ComparisonPanel
-          pokemons={comparisonList}
-          onClear={() => setComparisonList([])}
-        />
+        <ComparisonPanel pokemons={comparisonList} onClear={clearCompare} />
       </details>
     </aside>
   );
