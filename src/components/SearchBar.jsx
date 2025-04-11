@@ -137,31 +137,35 @@ function SearchBar({ onError, recentSearches, setRecentSearches }) {
       );
     }
 
-    return suggestions.map((name, index) => (
-      <li
-        key={name}
-        className={index === selectedIndex ? 'selected' : ''}
-        onMouseEnter={() => setSelectedIndex(index)}
-        onClick={() => {
-          setInput(name);
-          handleSearchSelection(name);
-          setSelectedIndex(-1);
-        }}
-        aria-selected={index === selectedIndex}
-      >
-        {pokemonCache[name] ? (
-          <MiniPokemonCard
-            pokemon={pokemonCache[name]}
-            onClick={() => {}}
-            disableInteraction={true}
-          />
-        ) : (
-          name
-        )}
-      </li>
-    ));
-  };
+    return suggestions.map((name, index) => {
+      const isSelected = index === selectedIndex;
+      const cached = pokemonCache[name];
 
+      return (
+        <li
+          key={name}
+          className={isSelected ? 'selected' : ''}
+          aria-selected={isSelected}
+          style={{ cursor: 'pointer' }}
+          onMouseEnter={() => setSelectedIndex(index)}
+          onMouseDown={e => {
+            e.preventDefault(); // empêche blur du champ input
+          }}
+          onClick={() => {
+            setInput(name);
+            handleSearchSelection(name);
+            setSelectedIndex(-1);
+          }}
+        >
+          {cached ? (
+            <MiniPokemonCard pokemon={cached} disableInteraction />
+          ) : (
+            <span style={{ padding: '0.5rem' }}>{name}</span>
+          )}
+        </li>
+      );
+    });
+  };
   return (
     <form
       onSubmit={handleSubmit}

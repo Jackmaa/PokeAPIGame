@@ -4,7 +4,7 @@ function MiniPokemonCard({ pokemon, onClick, disableInteraction = false }) {
   return (
     <div
       className="mini-pokemon-card"
-      onClick={() => !disableInteraction && onClick?.(pokemon.id)}
+      onClick={() => !disableInteraction && onClick?.(pokemon.name)}
       style={{
         pointerEvents: disableInteraction ? 'none' : 'auto',
       }}
