@@ -21,7 +21,9 @@ function PokemonDetails() {
       <div className="pokemon-details">
         <h2>❌ Pokémon not found</h2>
         <p>Either this form doesn’t exist or the PokéAPI has no data for it.</p>
-        <button onClick={() => navigate('/')}>⬅ Back to Pokédex</button>
+        <Button onClick={() => navigate('/')} variant="filled">
+          ⬅ Back to Pokédex
+        </Button>
       </div>
     );
   }
