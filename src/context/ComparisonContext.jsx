@@ -27,7 +27,6 @@ export const ComparisonProvider = ({ children }) => {
         toggleCompare,
         removeFromCompare,
         clearCompare,
-        removeFromCompare,
       }}
     >
       {children}

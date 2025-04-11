@@ -10,11 +10,13 @@ import {
 import PropTypes from 'prop-types';
 import typeColors from '../../utils/typeColors';
 
-function StatRadar({ stats, type }) {
+function StatRadar({ stats, type, radarColor, maxStats, isBest }) {
   const color = typeColors[type] || '#888';
-  const data = stats.map(stat => ({
-    stat: stat.stat.name.toUpperCase(),
-    value: stat.base_stat,
+  const strokeColor = isBest ? '#00ff88' : radarColor;
+  const data = stats.map(s => ({
+    stat: s.stat.name,
+    value: s.base_stat,
+    isMax: s.base_stat === maxStats?.[s.stat.name],
   }));
 
   const CustomTooltip = ({ active, payload }) => {
@@ -54,11 +56,24 @@ function StatRadar({ stats, type }) {
           <PolarAngleAxis dataKey="stat" style={{ fontSize: '0.7rem' }} />
           <PolarRadiusAxis angle={30} domain={[0, 160]} />
           <Radar
-            name={data.stat}
+            name="Stat"
             dataKey="value"
-            stroke={color}
-            fill={color}
+            stroke={strokeColor || color}
+            fill={strokeColor || color}
+            strokeWidth={data.some(d => d.isMax) ? 3 : 1}
             fillOpacity={0.6}
+            dot={({ payload, cx, cy }) =>
+              payload.isMax ? (
+                <circle
+                  cx={cx}
+                  cy={cy}
+                  r={4}
+                  fill={strokeColor}
+                  stroke="#000"
+                  strokeWidth={1}
+                />
+              ) : null
+            }
           />
           <Tooltip content={<CustomTooltip />} />
         </RadarChart>
@@ -77,6 +92,9 @@ StatRadar.propTypes = {
     })
   ).isRequired,
   type: PropTypes.string.isRequired,
+  radarColor: PropTypes.string,
+  maxStats: PropTypes.object,
+  isBest: PropTypes.bool,
 };
 
 export default StatRadar;

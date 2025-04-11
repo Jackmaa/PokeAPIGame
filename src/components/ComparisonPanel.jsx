@@ -1,10 +1,34 @@
 import { useComparison } from '../context/ComparisonContext';
 import typeColors from '../utils/typeColors';
 import typeEmojis from '../utils/typeEmojis';
+import radarColors from '../utils/radarColors';
 import StatRadar from './ui/StatRadar';
 
 function ComparisonPanel({ pokemons }) {
   const { clearCompare, removeFromCompare } = useComparison();
+  const sortedPokemons = [...pokemons].sort((a, b) => {
+    const totalA = a.stats.reduce((sum, s) => sum + s.base_stat, 0);
+    const totalB = b.stats.reduce((sum, s) => sum + s.base_stat, 0);
+    return totalB - totalA; // Descending
+  });
+  const bestId = sortedPokemons[0]?.id;
+  const statKeys = [
+    'hp',
+    'attack',
+    'defense',
+    'special-attack',
+    'special-defense',
+    'speed',
+  ];
+
+  const maxStats = statKeys.reduce((acc, key) => {
+    acc[key] = Math.max(
+      ...pokemons.map(
+        p => p.stats.find(stat => stat.stat.name === key)?.base_stat || 0
+      )
+    );
+    return acc;
+  }, {});
 
   if (pokemons.length < 2) return null;
 
@@ -20,13 +44,11 @@ function ComparisonPanel({ pokemons }) {
       </div>
 
       <div className="comparison-grid">
-        {pokemons.map(p => (
+        {pokemons.map((p, index) => (
           <div
-            className="comparison-card"
+            className={`comparison-card ${p.id === bestId ? 'best-card-glow' : ''}`}
             key={p.id}
-            style={{
-              position: 'relative',
-            }}
+            style={{ position: 'relative' }}
           >
             <img
               src={p.sprites.front_default}
@@ -50,6 +72,21 @@ function ComparisonPanel({ pokemons }) {
             >
               ❌
             </button>
+            {p.id === bestId && (
+              <div
+                className="crown-badge"
+                title="Top Pokémon"
+                style={{
+                  position: 'absolute',
+                  top: '0rem',
+                  left: '0.4rem',
+                  fontSize: '1.5rem',
+                  filter: 'drop-shadow(0 0 4px gold)',
+                }}
+              >
+                👑
+              </div>
+            )}
             <h4>{p.name}</h4>
 
             <div
@@ -83,7 +120,13 @@ function ComparisonPanel({ pokemons }) {
               })}
             </div>
 
-            <StatRadar stats={p.stats} type={p.types[0].type.name} />
+            <StatRadar
+              stats={p.stats}
+              type={p.types[0].type.name}
+              radarColor={radarColors[index] ?? '#ccc'}
+              maxStats={maxStats}
+              isBest={p.id === bestId}
+            />
           </div>
         ))}
       </div>
