@@ -1,4 +1,3 @@
-import React, { useState } from 'react';
 import typeColors from '../utils/typeColors';
 import typeEmojis from '../utils/typeEmojis';
 import { useComparison } from '../context/ComparisonContext';
