@@ -24,7 +24,7 @@ function ComparisonPanel({ pokemons }) {
   const maxStats = statKeys.reduce((acc, key) => {
     acc[key] = Math.max(
       ...pokemons.map(
-        p => p.stats.find(stat => stat.stat.name === key)?.base_stat || 0
+        p => p.stats?.find(stat => stat.stat.name === key)?.base_stat || 0
       )
     );
     return acc;

@@ -3,11 +3,13 @@ import { useNavigate } from 'react-router-dom';
 import usePokemonNames from '../hooks/usePokemonNames';
 import useDebouncedValue from '../hooks/useDebouncedValue';
 import { AnimatePresence, motion } from 'framer-motion';
+import { useComparison } from '../context/ComparisonContext';
 import MiniPokemonCard from './MiniPokemonCard';
 
 function SearchBar({ onError, recentSearches, setRecentSearches }) {
   const [input, setInput] = useState('');
   const [selectedIndex, setSelectedIndex] = useState(-1);
+  const { toggleCompare, comparisonList } = useComparison();
 
   const debouncedInput = useDebouncedValue(input, 200);
   const nameList = usePokemonNames(input.length >= 1);
@@ -140,18 +142,19 @@ function SearchBar({ onError, recentSearches, setRecentSearches }) {
     return suggestions.map((name, index) => {
       const isSelected = index === selectedIndex;
       const cached = pokemonCache[name];
+      const inComparison =
+        cached && comparisonList.some(p => p.id === cached.id);
 
       return (
         <li
           key={name}
           className={isSelected ? 'selected' : ''}
           aria-selected={isSelected}
-          style={{ cursor: 'pointer' }}
+          style={{ cursor: 'pointer', position: 'relative' }}
           onMouseEnter={() => setSelectedIndex(index)}
-          onMouseDown={e => {
-            e.preventDefault(); // empêche blur du champ input
-          }}
-          onClick={() => {
+          onMouseDown={e => e.preventDefault()}
+          onClick={e => {
+            if (e.target.closest('.compare-btn')) return;
             setInput(name);
             handleSearchSelection(name);
             setSelectedIndex(-1);
@@ -162,10 +165,35 @@ function SearchBar({ onError, recentSearches, setRecentSearches }) {
           ) : (
             <span style={{ padding: '0.5rem' }}>{name}</span>
           )}
+
+          {cached && (
+            <button
+              className="compare-btn"
+              onClick={e => {
+                e.stopPropagation();
+                toggleCompare(cached);
+              }}
+              style={{
+                position: 'absolute',
+                top: '0.4rem',
+                right: '0.4rem',
+                fontSize: '0.65rem',
+                padding: '0.2rem 0.4rem',
+                background: '#111',
+                border: '1px solid #666',
+                borderRadius: '0.3rem',
+                color: inComparison ? '#0f0' : '#ccc',
+                cursor: 'pointer',
+              }}
+            >
+              {inComparison ? '✔' : '➕'}
+            </button>
+          )}
         </li>
       );
     });
   };
+
   return (
     <form
       onSubmit={handleSubmit}
