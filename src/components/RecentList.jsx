@@ -29,14 +29,6 @@ function RecentList({ recentSearches, setRecentSearches }) {
             handleClear();
           }}
           className="reset-btn"
-          style={{
-            fontSize: '0.75rem',
-            background: 'transparent',
-            border: '1px solid #999',
-            borderRadius: '0.3rem',
-            padding: '0.2rem 0.6rem',
-            cursor: 'pointer',
-          }}
         >
           Reset
         </button>
