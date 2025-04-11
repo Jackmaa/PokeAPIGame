@@ -1,4 +1,3 @@
-// src/context/ComparisonContext.jsx
 import { createContext, useContext, useState } from 'react';
 
 const ComparisonContext = createContext();
@@ -15,11 +14,15 @@ export const ComparisonProvider = ({ children }) => {
     });
   };
 
+  const removeFromCompare = id => {
+    setComparisonList(prev => prev.filter(p => p.id !== id));
+  };
+
   const clearCompare = () => setComparisonList([]);
 
   return (
     <ComparisonContext.Provider
-      value={{ comparisonList, toggleCompare, clearCompare }}
+      value={{ comparisonList, toggleCompare, removeFromCompare, clearCompare }}
     >
       {children}
     </ComparisonContext.Provider>

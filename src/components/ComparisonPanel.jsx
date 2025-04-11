@@ -1,10 +1,11 @@
+import { useComparison } from '../context/ComparisonContext';
 import typeColors from '../utils/typeColors';
 import typeEmojis from '../utils/typeEmojis';
-import { useComparison } from '../context/ComparisonContext';
 import StatRadar from './ui/StatRadar';
 
 function ComparisonPanel({ pokemons }) {
-  const { clearCompare } = useComparison();
+  const { clearCompare, removeFromCompare } = useComparison();
+
   if (pokemons.length < 2) return null;
 
   return (
@@ -17,15 +18,40 @@ function ComparisonPanel({ pokemons }) {
           </button>
         </div>
       </div>
+
       <div className="comparison-grid">
         {pokemons.map(p => (
-          <div className="comparison-card" key={p.id}>
+          <div
+            className="comparison-card"
+            key={p.id}
+            style={{
+              position: 'relative',
+            }}
+          >
             <img
               src={p.sprites.front_default}
               alt={p.name}
               className="comp-sprite"
             />
+            <button
+              onClick={() => removeFromCompare(p.id)}
+              title={`Remove ${p.name} from comparison`}
+              style={{
+                position: 'absolute',
+                top: '0.4rem',
+                right: '0.4rem',
+                background: 'transparent',
+                border: 'none',
+                color: '#c00',
+                fontWeight: 'bold',
+                fontSize: '1rem',
+                cursor: 'pointer',
+              }}
+            >
+              ❌
+            </button>
             <h4>{p.name}</h4>
+
             <div
               className="comp-types"
               style={{
@@ -56,6 +82,7 @@ function ComparisonPanel({ pokemons }) {
                 );
               })}
             </div>
+
             <StatRadar stats={p.stats} type={p.types[0].type.name} />
           </div>
         ))}
