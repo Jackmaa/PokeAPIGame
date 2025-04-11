@@ -22,7 +22,13 @@ export const ComparisonProvider = ({ children }) => {
 
   return (
     <ComparisonContext.Provider
-      value={{ comparisonList, toggleCompare, removeFromCompare, clearCompare }}
+      value={{
+        comparisonList,
+        toggleCompare,
+        removeFromCompare,
+        clearCompare,
+        removeFromCompare,
+      }}
     >
       {children}
     </ComparisonContext.Provider>
